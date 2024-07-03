@@ -15,62 +15,58 @@ Os principais objetivos do LAPES são:
 
 ## Professores
 ### Isaac Elgrably
-
-| [Isaac no Linkedin](https://www.linkedin.com/) | [Isaac no GitHub](https://github.com/) |
+| [Isaac no GitHub](https://github.com/Elgrably) | [Isaac no Linkedin](https://www.linkedin.com/in/isaac-elgrably-8a3440115) |
 | - | - |
 
-[![Static Badge](https://img.shields.io/badge/Elgrably-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/Elgrably)
-[![Static Badge](https://img.shields.io/badge/isaac--elgrably--8a3440115-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/isaac-elgrably-8a3440115)
-
 ### Ricardo Melo
-[![Static Badge](https://img.shields.io/badge/ricardorodrigomm-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/ricardorodrigomm)
-[![Static Badge](https://img.shields.io/badge/ricardorodrigom-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/ricardorodrigom)
+| [Ricardo no GitHub](https://github.com/ricardorodrigomm) | [Ricardo no Linkedin](https://www.linkedin.com/in/ricardorodrigom) |
+| - | - |
 
 ## Gerentes
 ### Bruno Kalel
-[![Static Badge](https://img.shields.io/badge/bruno--kalel-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/bruno-kalel)
-[![Static Badge](https://img.shields.io/badge/bruno--kalel-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/bruno-kalel)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Bruno no GitHub](https://github.com/bruno-kalel) | [Bruno no Linkedin](https://www.linkedin.com/in/bruno-kalel) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Caio Johnston
-[![Static Badge](https://img.shields.io/badge/CaioJohnston-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/CaioJohnston)
-[![Static Badge](https://img.shields.io/badge/caio--johnston-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/caio-johnston)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Caio no GitHub](https://github.com/CaioJohnston) | [Caio no Linkedin](https://www.linkedin.com/in/caio-johnston) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Fabio Neves
-[![Static Badge](https://img.shields.io/badge/FabioNeves00-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/FabioNeves00)
-[![Static Badge](https://img.shields.io/badge/fabioneves00-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/fabioneves00)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Fabio no GitHub](https://github.com/FabioNeves00) | [Fabio no Linkedin](https://www.linkedin.com/in/fabioneves00) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Marco Proença
-[![Static Badge](https://img.shields.io/badge/Ninniet5670-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/Ninniet5670)
-[![Static Badge](https://img.shields.io/badge/marco--aurélio--proença--neto--629008210-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Marco no GitHub](https://github.com/Ninniet5670) | [Marco no Linkedin](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Mel Leão
-[![Static Badge](https://img.shields.io/badge/melltl-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/melltl)
-[![Static Badge](https://img.shields.io/badge/mel--leao-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/mel-leao)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Mel no GitHub](https://github.com/melltl) | [Mel no Linkedin](https://www.linkedin.com/in/mel-leao) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Rafael Maranhão
-[![Static Badge](https://img.shields.io/badge/gabipasse-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/gabipasse)
-[![Static Badge](https://img.shields.io/badge/rafael--maranhao--juliano-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/rafael-maranhao-juliano)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Rafael no GitHub](https://github.com/gabipasse) | [Rafael no Linkedin](https://www.linkedin.com/in/rafael-maranhao-juliano) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Rodrigo Franco
-[![Static Badge](https://img.shields.io/badge/RCFranco-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/RCFranco)
-[![Static Badge](https://img.shields.io/badge/rodrigo--cardoso--franco--23a6001bb-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Rodrigo no GitHub](https://github.com/RCFranco) | [Rodrigo no Linkedin](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ### Ryan Oliveira
-[![Static Badge](https://img.shields.io/badge/RyanOliveira00-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/RyanOliveira00)
-[![Static Badge](https://img.shields.io/badge/ryanolivr-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/ryanolivr)
-#### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| [Ryan no GitHub](https://github.com/RyanOliveira00) | [Ryan no Linkedin](https://www.linkedin.com/in/ryanolivr) |
+| - | - |
+###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
 
 ## Egressos
 ### José Nonato
-[![Static Badge](https://img.shields.io/badge/Jose--Nonato-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/Jose-Nonato)
-[![Static Badge](https://img.shields.io/badge/jose--nonato--junior-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/jose-nonato-junior)
+| [José no GitHub](https://github.com/Jose-Nonato) | [José no Linkedin](https://www.linkedin.com/in/jose-nonato-junior) |
+| - | - |
 
 ## Entre em contato conosco
 Se você tiver alguma dúvida, sugestão ou pedido relacionado aos nossos projetos ou à Engenharia de Software em geral, sinta-se à vontade para entrar em contato conosco. Envie-nos um e-mail através do endereço `contato.lapes@gmail.com`.
