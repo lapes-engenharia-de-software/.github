@@ -15,6 +15,10 @@ Os principais objetivos do LAPES são:
 
 ## Professores
 ### Isaac Elgrably
+
+| [Isaac no Linkedin](https://www.linkedin.com/) | [Isaac no GitHub](https://github.com/) |
+| - | - |
+
 [![Static Badge](https://img.shields.io/badge/Elgrably-%23ffffff?style=for-the-badge&logo=github&logoColor=white&labelColor=%23181717)](https://www.github.com/Elgrably)
 [![Static Badge](https://img.shields.io/badge/isaac--elgrably--8a3440115-%23ffffff?style=for-the-badge&logo=linkedin&logoColor=white&labelColor=%230A66C2)](https://www.linkedin.com/in/isaac-elgrably-8a3440115)
 
