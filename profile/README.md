@@ -14,59 +14,27 @@ Os principais objetivos do LAPES são:
 - Desenvolver softwares de qualidade que atendam às necessidades dos usuários.
 
 ## Professores
-### Isaac Elgrably
-| [Isaac no GitHub](https://github.com/Elgrably) | [Isaac no Linkedin](https://www.linkedin.com/in/isaac-elgrably-8a3440115) |
-| - | - |
-
-### Ricardo Melo
-| [Ricardo no GitHub](https://github.com/ricardorodrigomm) | [Ricardo no Linkedin](https://www.linkedin.com/in/ricardorodrigom) |
-| - | - |
+| Nome | LinkedIn | GitHub |
+| - | - | - |
+| Isaac Elgrably | [Isaac no GitHub](https://github.com/Elgrably) | [Isaac no Linkedin](https://www.linkedin.com/in/isaac-elgrably-8a3440115) |
+| Ricardo Melo | [Ricardo no GitHub](https://github.com/ricardorodrigomm) | [Ricardo no Linkedin](https://www.linkedin.com/in/ricardorodrigom) |
 
 ## Gerentes
-### Bruno Kalel
-| [Bruno no GitHub](https://github.com/bruno-kalel) | [Bruno no Linkedin](https://www.linkedin.com/in/bruno-kalel) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Caio Johnston
-| [Caio no GitHub](https://github.com/CaioJohnston) | [Caio no Linkedin](https://www.linkedin.com/in/caio-johnston) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Fabio Neves
-| [Fabio no GitHub](https://github.com/FabioNeves00) | [Fabio no Linkedin](https://www.linkedin.com/in/fabioneves00) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Marco Proença
-| [Marco no GitHub](https://github.com/Ninniet5670) | [Marco no Linkedin](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Mel Leão
-| [Mel no GitHub](https://github.com/melltl) | [Mel no Linkedin](https://www.linkedin.com/in/mel-leao) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Rafael Maranhão
-| [Rafael no GitHub](https://github.com/gabipasse) | [Rafael no Linkedin](https://www.linkedin.com/in/rafael-maranhao-juliano) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Rodrigo Franco
-| [Rodrigo no GitHub](https://github.com/RCFranco) | [Rodrigo no Linkedin](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
-
-### Ryan Oliveira
-| [Ryan no GitHub](https://github.com/RyanOliveira00) | [Ryan no Linkedin](https://www.linkedin.com/in/ryanolivr) |
-| - | - |
-###### Tópicos de interesse: tópico 1, tópico 2, tópico 3, tópico 4.
+| Nome | Tópicos de interesse | LinkedIn | GitHub |
+| - | - | - | - |
+| Bruno Kalel | Tópico 1, tópico 2, tópico 3 | [Bruno no LinkedIn](https://www.linkedin.com/in/bruno-kalel) | [Bruno no GitHub](https://github.com/bruno-kalel) |
+| Caio Johnston | Tópico 1, tópico 2, tópico 3 | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston) | [Caio no GitHub](https://github.com/CaioJohnston) |
+| Fabio Neves | Tópico 1, tópico 2, tópico 3 | [Fabio no GitHub](https://github.com/FabioNeves00) | [Fabio no Linkedin](https://www.linkedin.com/in/fabioneves00) |
+| Marco Proença | Tópico 1, tópico 2, tópico 3 | [Marco no GitHub](https://github.com/Ninniet5670) | [Marco no Linkedin](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) |
+| Mel Leão | Tópico 1, tópico 2, tópico 3 | [Mel no GitHub](https://github.com/melltl) | [Mel no Linkedin](https://www.linkedin.com/in/mel-leao) |
+| Rafael Maranhão | Tópico 1, tópico 2, tópico 3 | [Rafael no GitHub](https://github.com/gabipasse) | [Rafael no Linkedin](https://www.linkedin.com/in/rafael-maranhao-juliano) |
+| Rodrigo Franco | Tópico 1, tópico 2, tópico 3 | [Rodrigo no GitHub](https://github.com/RCFranco) | [Rodrigo no Linkedin](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb) |
+| Ryan Oliveira | Tópico 1, tópico 2, tópico 3 | [Ryan no GitHub](https://github.com/RyanOliveira00) | [Ryan no Linkedin](https://www.linkedin.com/in/ryanolivr) |
 
 ## Egressos
-### José Nonato
-| [José no GitHub](https://github.com/Jose-Nonato) | [José no Linkedin](https://www.linkedin.com/in/jose-nonato-junior) |
-| - | - |
+| Nome | LinkedIn | GitHub |
+| - | - | - |
+| José Nonato | [José no GitHub](https://github.com/Jose-Nonato) | [José no Linkedin](https://www.linkedin.com/in/jose-nonato-junior) |
 
 ## Entre em contato conosco
 Se você tiver alguma dúvida, sugestão ou pedido relacionado aos nossos projetos ou à Engenharia de Software em geral, sinta-se à vontade para entrar em contato conosco. Envie-nos um e-mail através do endereço `contato.lapes@gmail.com`.
