@@ -20,16 +20,16 @@ Os principais objetivos do LAPES são:
 | Ricardo Melo | [Ricardo no GitHub](https://github.com/ricardorodrigomm) | [Ricardo no Linkedin](https://www.linkedin.com/in/ricardorodrigom) |
 
 ## Gerentes
-| Nome | Tópicos de interesse | LinkedIn | GitHub |
-| - | - | - | - |
-| Bruno Kalel | Tópico 1, tópico 2, tópico 3 | [Bruno no LinkedIn](https://www.linkedin.com/in/bruno-kalel) | [Bruno no GitHub](https://github.com/bruno-kalel) |
-| Caio Johnston | Tópico 1, tópico 2, tópico 3 | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston) | [Caio no GitHub](https://github.com/CaioJohnston) |
-| Fabio Neves | Tópico 1, tópico 2, tópico 3 | [Fabio no GitHub](https://github.com/FabioNeves00) | [Fabio no Linkedin](https://www.linkedin.com/in/fabioneves00) |
-| Marco Proença | Tópico 1, tópico 2, tópico 3 | [Marco no GitHub](https://github.com/Ninniet5670) | [Marco no Linkedin](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) |
-| Mel Leão | Tópico 1, tópico 2, tópico 3 | [Mel no GitHub](https://github.com/melltl) | [Mel no Linkedin](https://www.linkedin.com/in/mel-leao) |
-| Rafael Maranhão | Tópico 1, tópico 2, tópico 3 | [Rafael no GitHub](https://github.com/gabipasse) | [Rafael no Linkedin](https://www.linkedin.com/in/rafael-maranhao-juliano) |
-| Rodrigo Franco | Tópico 1, tópico 2, tópico 3 | [Rodrigo no GitHub](https://github.com/RCFranco) | [Rodrigo no Linkedin](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb) |
-| Ryan Oliveira | Tópico 1, tópico 2, tópico 3 | [Ryan no GitHub](https://github.com/RyanOliveira00) | [Ryan no Linkedin](https://www.linkedin.com/in/ryanolivr) |
+| Nome | Tópicos de interesse | Projeto Atual | LinkedIn | GitHub |
+| - | - | - | - | - |
+| Bruno Kalel | Tópico 1, tópico 2, tópico 3 | PROJETO | [Bruno no LinkedIn](https://www.linkedin.com/in/bruno-kalel) | [Bruno no GitHub](https://github.com/bruno-kalel) |
+| Caio Johnston | Tópico 1, tópico 2, tópico 3 | PROJETO | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston) | [Caio no GitHub](https://github.com/CaioJohnston) |
+| Fabio Neves | Tópico 1, tópico 2, tópico 3 | PROJETO | [Fabio no GitHub](https://github.com/FabioNeves00) | [Fabio no Linkedin](https://www.linkedin.com/in/fabioneves00) |
+| Marco Proença | Tópico 1, tópico 2, tópico 3 | PROJETO | [Marco no GitHub](https://github.com/Ninniet5670) | [Marco no Linkedin](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) |
+| Mel Leão | Tópico 1, tópico 2, tópico 3 | PROJETO | [Mel no GitHub](https://github.com/melltl) | [Mel no Linkedin](https://www.linkedin.com/in/mel-leao) |
+| Rafael Maranhão | Tópico 1, tópico 2, tópico 3 | PROJETO | [Rafael no GitHub](https://github.com/gabipasse) | [Rafael no Linkedin](https://www.linkedin.com/in/rafael-maranhao-juliano) |
+| Rodrigo Franco | Tópico 1, tópico 2, tópico 3 | PROJETO | [Rodrigo no GitHub](https://github.com/RCFranco) | [Rodrigo no Linkedin](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb) |
+| Ryan Oliveira | Tópico 1, tópico 2, tópico 3 | PROJETO | [Ryan no GitHub](https://github.com/RyanOliveira00) | [Ryan no Linkedin](https://www.linkedin.com/in/ryanolivr) |
 
 ## Egressos
 | Nome | LinkedIn | GitHub |
