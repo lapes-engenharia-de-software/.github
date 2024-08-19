@@ -23,7 +23,7 @@ Os principais objetivos do LAPES são:
 | Nome | Tópicos de interesse | Projeto Atual | LinkedIn | GitHub |
 | - | - | - | - | - |
 | Bruno Kalel | Tópico 1, tópico 2, tópico 3 | PROJETO | [Bruno no LinkedIn](https://www.linkedin.com/in/bruno-kalel) | [Bruno no GitHub](https://github.com/bruno-kalel) |
-| Caio Johnston | Tópico 1, tópico 2, tópico 3 | PROJETO | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston) | [Caio no GitHub](https://github.com/CaioJohnston) |
+| Caio Johnston | Data Science, Machine Learning, Big Data | PROJETO | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston) | [Caio no GitHub](https://github.com/CaioJohnston) |
 | Fabio Neves | Tópico 1, tópico 2, tópico 3 | PROJETO | [Fabio no GitHub](https://github.com/FabioNeves00) | [Fabio no Linkedin](https://www.linkedin.com/in/fabioneves00) |
 | Marco Proença | Tópico 1, tópico 2, tópico 3 | PROJETO | [Marco no GitHub](https://github.com/Ninniet5670) | [Marco no Linkedin](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) |
 | Mel Leão | Tópico 1, tópico 2, tópico 3 | PROJETO | [Mel no GitHub](https://github.com/melltl) | [Mel no Linkedin](https://www.linkedin.com/in/mel-leao) |
