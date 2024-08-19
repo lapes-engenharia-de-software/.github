@@ -3,7 +3,7 @@
 
 Bem-vindo(a) ao repositório do LAPES, um grupo de estudos dedicado à aplicação dos conceitos de Engenharia de Software. Este repositório contém informações sobre o grupo, seus membros e como entrar em contato conosco.
 
-> EI, VOCÊ!  VOCÊ MESMO! 🫵 ESTÁ PROCURANDO SOBRE O PROCESSO SELETIVO 2024? [CLIQUE AQUI](https://github.com/lapes-engenharia-de-software/.github/blob/main/profile/ps-lapes-2024.md)! 👈
+> ## EI, VOCÊ!  VOCÊ MESMO! 🫵 ESTÁ PROCURANDO SOBRE O PROCESSO SELETIVO 2024? [CLIQUE AQUI](https://github.com/lapes-engenharia-de-software/.github/blob/main/profile/ps-lapes-2024.md)! 👈
 
 ## Sobre
 O LAPES (Laboratório de Pesquisa de Engenharia de Software) é um grupo de estudos composto por discentes, docentes e egressos do Centro Universitário do Estado do Pará (CESUPA). Interessados em aprofundar nossos conhecimentos e habilidades em Engenharia de Software, nos reunimos para discutir e aplicar práticas modernas de desenvolvimento de software em projetos reais.
