@@ -1,4 +1,4 @@
-![image](https://github.com/lapes-engenharia-de-software/.github/blob/main/profile/lapes-logo-2024.png)
+![image](https://github.com/lapes-engenharia-de-software/.github/blob/main/profile/lapes-logo-banner-2024.png)
 # LAPES - Laboratório de Pesquisa de Engenharia de Software
 
 Bem-vindo(a) ao repositório do LAPES, um grupo de estudos dedicado à aplicação dos conceitos de Engenharia de Software. Este repositório contém informações sobre o grupo, seus membros e como entrar em contato conosco.
