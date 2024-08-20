@@ -72,7 +72,7 @@ Os participantes são livres para escolher as ferramentas, linguagens de program
 
 #### 😭 Tenho uma dúvida não contemplada na Seção S.B.S.! É o meu fim?
 
-Caso tenha dúvidas adicionais sobre o processo seletivo, entre em contato através do nosso [e-mail](contato.lapes@gmail.com).
+Caso tenha dúvidas adicionais sobre o processo seletivo, entre em contato através do nosso e-mail `contato.lapes@gmail.com`.
 
 ## 🗓️ Atualizações sobre o formato da apresentação
 
