@@ -17,7 +17,7 @@ Para este desafio, a equipe pensou em algumas possibilidades. Você as confere l
 | 💡 Área de atuação | Descrição |
 | - | - |
 | **🖥️ Para desenvolvedores front-end** | Desenvolva uma interface sem a necessidade de integração com o back-end. |
-| **⚙️ Para desenvolvedores back-end** | Crie uma API conectada a um banco de dados e alimente-o com os dados fornecidos. *(Link abaixo)*|
+| **⚙️ Para desenvolvedores back-end** | Crie uma API conectada a um banco de dados e alimente-o com os dados fornecidos. A base de dados está disponível na tabela do desafio em dupla ou trio.|
 | **📊 Para cientistas de dados** | Realize uma análise completa dos dados fornecidos. A ementa e a base de dados estão disponíveis na tabela do desafio em dupla ou trio. |
 | **🔧 Para quem é um canivete suíço** | Combine diferentes habilidades e crie uma solução que demonstre seus conhecimentos em duas ou mais áreas. |
 
