@@ -22,11 +22,12 @@ Os principais objetivos do LAPES são:
 | Polyana Fonseca | [Polyana no Linkedin](https://www.linkedin.com/in/polyana-fonseca-nascimento/) |
 | Vitor Hugo | [Vitor no Linkedin](https://www.linkedin.com/in/vitorhfgomes/) |
 
+
 ## Gerentes  
 | Nome              | LinkedIn                                                                 | GitHub                                           |
 |-------------------|--------------------------------------------------------------------------|--------------------------------------------------|
 | Adib Hosn         | [Adib no LinkedIn](https://www.linkedin.com/in/adibhosn/) | [Adib no GitHub](https://github.com/adibhosn) |
-| Athos Araújo      | [Athos no LinkedIn](https://www.linkedin.com/in/ahtoous/) |                                                  |
+| Athos Araújo      | [Athos no LinkedIn](https://www.linkedin.com/in/ahtoous/) |  [Athos no Github](https://github.com/athosaraujo)                                          |
 | Bruno Kalel       | [Bruno no LinkedIn](https://www.linkedin.com/in/bruno-kalel)             | [Bruno no GitHub](https://github.com/bruno-kalel) |
 | Caio Johnston     | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston)            | [Caio no GitHub](https://github.com/CaioJohnston) |
 | Davi Maciel       | [Davi no LinkedIn](https://www.linkedin.com/in/davi-maciel-cavalcante-dados/)            | [Davi no GitHub](https://github.com/DaviMacielCavalcante) |
