@@ -29,7 +29,7 @@ Os principais objetivos do LAPES são:
 | Athos Araújo      | [Athos no LinkedIn](https://www.linkedin.com/in/ahtoous/) |                                                  |
 | Bruno Kalel       | [Bruno no LinkedIn](https://www.linkedin.com/in/bruno-kalel)             | [Bruno no GitHub](https://github.com/bruno-kalel) |
 | Caio Johnston     | [Caio no LinkedIn](https://www.linkedin.com/in/caio-johnston)            | [Caio no GitHub](https://github.com/CaioJohnston) |
-| Davi Maciel       |                                                                          |                                                  |
+| Davi Maciel       | [Davi no LinkedIn](https://www.linkedin.com/in/davi-maciel-cavalcante-dados/)            | [Davi no GitHub](https://github.com/DaviMacielCavalcante) |
 | Fabio Neves       | [Fabio no LinkedIn](https://www.linkedin.com/in/fabioneves00)            | [Fabio no GitHub](https://github.com/FabioNeves00) |
 | Gabriel Mattos    | [Gabriel no LinkedIn](https://www.linkedin.com/in/gabrielmatsan/)       | [Gabriel no GitHub](https://github.com/gabrielmatsan) |
 | Giovanni Vasconcelos | [Giovanni no LinkedIn](https://www.linkedin.com/in/giovannivasconcelos/)       | [Giovanni no GitHub](https://github.com/giovannibragasv) |
