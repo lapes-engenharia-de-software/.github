@@ -38,7 +38,7 @@ Os principais objetivos do LAPES são:
 | Marco Proença     | [Marco no LinkedIn](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) | [Marco no GitHub](https://github.com/Ninniet5670) |
 | Mel Leão          | [Mel no LinkedIn](https://www.linkedin.com/in/mel-leao)                  | [Mel no GitHub](https://github.com/melltl)       |
 | Rafael Maranhão   | [Rafael no LinkedIn](https://www.linkedin.com/in/rafael-maranhao-juliano) | [Rafael no GitHub](https://github.com/gabipasse) |
-| Roberta Okada     |                                                                          |                                                  |
+| Roberta Okada     | [Roberta no LinkedIn](https://www.linkedin.com/in/roberta-okada-cusinato-4a472521b/) | [Roberta no GitHub](https://github.com/robertasaoriokada) |
 | Rodrigo Franco    | [Rodrigo no LinkedIn](https://www.linkedin.com/in/rodrigo-cardoso-franco-23a6001bb) | [Rodrigo no GitHub](https://github.com/RCFranco) |
 | Ryan Oliveira     | [Ryan no LinkedIn](https://www.linkedin.com/in/ryanolivr)                | [Ryan no GitHub](https://github.com/RyanOliveira00) |
 
