@@ -34,7 +34,7 @@ Os principais objetivos do LAPES são:
 | Gabriel Mattos    | [Gabriel no LinkedIn](https://www.linkedin.com/in/gabrielmatsan/)       | [Gabriel no GitHub](https://github.com/gabrielmatsan) |
 | Giovanni Vasconcelos | [Giovanni no LinkedIn](https://www.linkedin.com/in/giovannivasconcelos/)       | [Giovanni no GitHub](https://github.com/giovannibragasv) |
 | José Nonato       | [José no LinkedIn](https://www.linkedin.com/in/jose-nonato-junior)       | [José no GitHub](https://github.com/Jose-Nonato) |
-| Marco Estrada     |                                                                          |                                                  |
+| Marco Estrada     | [Marco no LinkedIn](https://www.linkedin.com/in/marcoamef/)       | [Marco no GitHub](https://github.com/MarcoAmef) |
 | Marco Proença     | [Marco no LinkedIn](https://www.linkedin.com/in/marco-aurélio-proença-neto-629008210) | [Marco no GitHub](https://github.com/Ninniet5670) |
 | Mel Leão          | [Mel no LinkedIn](https://www.linkedin.com/in/mel-leao)                  | [Mel no GitHub](https://github.com/melltl)       |
 | Rafael Maranhão   | [Rafael no LinkedIn](https://www.linkedin.com/in/rafael-maranhao-juliano) | [Rafael no GitHub](https://github.com/gabipasse) |
