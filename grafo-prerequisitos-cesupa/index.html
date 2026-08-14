@@ -77,25 +77,13 @@
   /* ---------- Layout ---------- */
   main{display:flex;height:calc(100% - 51px)}
   #stage{flex:1;position:relative;overflow:hidden;background:var(--paper);touch-action:none}
-  #svg{width:100%;height:100%;display:block;cursor:grab}
+  #svg{width:100%;height:100%;display:block;cursor:grab;user-select:none;-webkit-user-select:none}
   #svg.grabbing{cursor:grabbing}
 
-  .hud{position:absolute;left:12px;bottom:12px;display:flex;gap:8px;align-items:flex-end;pointer-events:none;flex-wrap:wrap;max-width:calc(100% - 24px)}
   .card{
     background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
     box-shadow:0 4px 18px rgba(2,8,23,.10);pointer-events:auto
   }
-  .legend{padding:9px 11px;width:262px}
-  .legend h4{margin:0 0 7px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
-  .legend button{
-    display:flex;align-items:center;gap:7px;width:100%;background:none;border:0;padding:3px 2px;
-    font-size:11.5px;color:var(--ink-2);text-align:left;border-radius:5px
-  }
-  .legend button:hover{background:rgba(125,145,180,.12)}
-  .legend button.off{opacity:.35}
-  .legend i{width:9px;height:9px;border-radius:3px;flex:none}
-  .legend .foot{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);font-size:10.5px;color:var(--ink-3);line-height:1.5}
-  .legend .foot b{color:var(--ink-2);font-weight:600}
   .mini{position:absolute;right:12px;bottom:12px;padding:9px 10px;width:236px;pointer-events:auto}
   .mini h4{margin:0 0 7px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
   .periods{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px}
@@ -104,6 +92,8 @@
     font-size:11px;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums
   }
   .periods button:hover{background:rgba(125,145,180,.16);color:var(--ink)}
+  .tip b{color:var(--ink-2);font-weight:600}
+  .tip{margin:8px 0 0;font-size:10.5px;line-height:1.55;color:var(--ink-3)}
   #mapbox{display:block;width:100%;border:1px solid var(--line);border-radius:7px;background:var(--paper);cursor:crosshair}
   .vp{fill:rgba(37,99,235,.13);stroke:var(--up);stroke-width:14;vector-effect:non-scaling-stroke}
   .key{display:inline-block;padding:1px 5px;border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:9.5px;color:var(--ink-2)}
@@ -172,21 +162,17 @@
     main{flex-direction:column}
     aside{width:100%;height:44%;border-left:0;border-top:1px solid var(--line)}
     .brand{display:none}
-    .hud{left:8px;bottom:8px}
-    .legend{width:210px;max-height:168px;overflow:auto}
-    .legend .foot{display:none}
-  }
+      }
   @media (max-width:700px){
-    .legend{display:none}
-    .mini{left:8px;right:8px;bottom:8px;width:auto;padding:7px 8px}
-    .mini h4,#mapbox{display:none}
+      .mini{left:8px;right:8px;bottom:8px;width:auto;padding:7px 8px}
+    .mini h4,#mapbox,.tip{display:none}
     .periods{flex-wrap:nowrap;overflow-x:auto;margin-bottom:0;-webkit-overflow-scrolling:touch}
     .periods button{flex:none}
     header{gap:8px;padding:8px 10px}
     .tools{gap:5px}
   }
   @media print{
-    header,aside,.hud{display:none!important}
+    header,aside,.mini{display:none!important}
     main{height:100%}
   }
 </style>
@@ -223,13 +209,11 @@
 <main>
   <div id="stage">
     <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
-    <div class="hud">
-      <div class="card legend" id="legend"></div>
-    </div>
     <div class="card mini" id="mini">
       <h4>Ir para o período</h4>
       <div class="periods" id="periods"></div>
       <svg id="mapbox"></svg>
+      <p class="tip">Clique: mostra a cadeia · <b>Duplo clique: isola e aproxima</b> · Rolagem: zoom · Arrastar: mover · <span class="key">esc</span>: limpar</p>
     </div>
   </div>
 
@@ -296,7 +280,7 @@ const DATA = {
       { n: "Modelagem Estatística", p: 4, ax: "Dados e IA", pre: [["Estatística e Probabilidade"]] },
       { n: "Teoria de Grafos", p: 4, ax: "Teoria da computação", pre: [["Resolução Discreta de Problemas"], ["Estrutura de Dados"]] },
       { n: "Telecomunicações e Infraestrutura de Redes", p: 4, ax: "Redes e sistemas", pre: [["Arquitetura e Organização de Computadores"]] },
-      { n: "Laboratório de Programação Avançada [DevOps]", p: 4, ax: "Engenharia de software", pre: [["Laboratório de Desenvolvimento Web"]], obs: "No documento consta \"Programação de Desenvolvimento Web\"; a única disciplina correspondente na matriz é Laboratório de Desenvolvimento Web." },
+      { n: "Laboratório de Programação Avançada [DevOps]", p: 4, ax: "Engenharia de software", pre: [["Laboratório de Desenvolvimento Web"]] },
       { n: "Banco de Dados", p: 4, ax: "Dados e IA", pre: [["Lógica Digital"], ["Programação Orientada a Objetos"]] },
       { n: "Engenharia de Software", p: 4, ax: "Engenharia de software", pre: [["Interface de Software"]] },
       // 5º
@@ -370,7 +354,7 @@ const DATA = {
       { n: "Ciência dos Materiais", p: 3, ax: "Física e materiais", pre: [] },
       { n: "Estrutura de Dados e Algoritmos de Alta Performance", p: 3, ax: "Programação e computação", pre: [["Programação 2"]] },
       { n: "Prototipação de Produtos e Interface HM", p: 3, ax: "Software e produto", pre: [["Programação 1"], ["Expressão Gráfica"]] },
-      { n: "Eletrônica Analógica", p: 3, ax: "Eletrônica e embarcados", pre: [["Laboratório de Tecnologias Hands-On"]], obs: "O documento registra inversão curricular a deliberar pelo NDE: o conteúdo de eletricidade de que depende está no 4º período." },
+      { n: "Eletrônica Analógica", p: 3, ax: "Eletrônica e embarcados", pre: [["Laboratório de Tecnologias Hands-On"]] },
       { n: "Projeto Integrado 1", p: 3, ax: "Gestão e projetos", pre: [["Metodologia Científica"], ["Programação 1"], ["Negócios Digitais e Sustentáveis"]] },
       // 4º
       { n: "Cálculo 4", p: 4, ax: "Matemática", pre: [["Cálculo 2"], ["Álgebra Linear"]] },
@@ -393,7 +377,7 @@ const DATA = {
       { n: "Teoria de Grafos e Matemática Discreta", p: 6, ax: "Programação e computação", pre: [["Lógica Digital"], ["Estrutura de Dados e Algoritmos de Alta Performance"]] },
       { n: "Ciência de Dados", p: 6, ax: "Dados e IA", pre: [["Banco de Dados"], ["Modelagem Estatística"]] },
       { n: "Mecânica e Resistência dos Materiais", p: 6, ax: "Física e materiais", pre: [["Cálculo 2"], ["Ciência dos Materiais"]] },
-      { n: "Inteligência Artificial e Bioinspirada", p: 6, ax: "Dados e IA", pre: [["Estrutura de Dados e Algoritmos de Alta Performance"]] },
+      { n: "Inteligência Artificial e Bioinspirada", p: 6, ax: "Dados e IA", pre: [["Estrutura de Dados e Algoritmos de Alta Performance"], ["Pesquisa Operacional"]] },
       { n: "Tecnologia de Automação Industrial", p: 6, ax: "Automação e controle", pre: [["Eletrônica Digital"], ["Eletrônica Analógica"], ["Sistemas Embarcados para IoT"]] },
       { n: "Sinais e Sistemas", p: 6, ax: "Eletrônica e embarcados", pre: [["Cálculo 3"], ["Análise e Projeto de Circuitos"]] },
       // 7º
@@ -478,6 +462,7 @@ const S = { course:null, nodes:[], byName:{}, edges:[], W:0, H:0,
             k:1, tx:0, ty:0, sel:null, focus:false, offAxes:new Set(), hits:new Set() };
 
 const svg = document.getElementById('svg');
+const focusBtn = document.getElementById('focusBtn');
 const stage = document.getElementById('stage');
 let gRoot, gEdges, gNodes;
 
@@ -540,7 +525,6 @@ function build(courseKey){
   computeReach();
   layout(c);
   render(c);
-  buildLegend(c);
   buildMinimap();
   buildPeriods(c);
   renderOverview(c);
@@ -676,6 +660,7 @@ function render(c){
     g.appendChild(meta);
     n.el = g;
     g.addEventListener('click', ev => { ev.stopPropagation(); select(n.id); });
+    g.addEventListener('dblclick', ev => { ev.stopPropagation(); ev.preventDefault(); isolate(n.id); });
     g.addEventListener('mouseenter', () => { if (S.sel === null) hover(n.id); });
     g.addEventListener('mouseleave', () => { if (S.sel === null) hover(null); });
     gNodes.appendChild(g);
@@ -727,6 +712,32 @@ function hover(id){
   S.edges.forEach(e => { const cl = e.el.classList; cl.remove('up','down','mute');
     if (e.t === id) cl.add('up'); else if (e.s === id) cl.add('down');
   });
+}
+
+function setSel(id){
+  S.sel = id;
+  paint();
+  renderDetail(S.nodes[id]);
+  switchPane('detail');
+}
+
+/* duplo clique: isola a cadeia e enquadra */
+function isolate(id){
+  setSel(id);
+  if (!S.focus){ S.focus = true; focusBtn.classList.add('on'); paint(); }
+  fitChain(id);
+}
+function fitChain(id){
+  const n = S.nodes[id];
+  const ids = [id, ...n.anc, ...n.des].map(i => S.nodes[i]);
+  const x1 = Math.min(...ids.map(m => m.x)), x2 = Math.max(...ids.map(m => m.x + m.w));
+  const y1 = Math.min(...ids.map(m => m.y)), y2 = Math.max(...ids.map(m => m.y + m.h));
+  const r = stage.getBoundingClientRect(), pad = 70;
+  const k = clampK(Math.min(1.15, (r.width - pad*2)/(x2-x1), (r.height - pad*2)/(y2-y1)));
+  S.k = k;
+  S.tx = r.width/2 - (x1+x2)/2*k;
+  S.ty = r.height/2 - (y1+y2)/2*k;
+  applyTransform();
 }
 
 function select(id){
@@ -811,8 +822,10 @@ function renderDetail(n){
       <div class="list">${anc.map(x=>itemBtn(x)).join('') ||
         `<div class="empty" style="padding:2px">Nada precede esta disciplina.</div>`}</div>
     </div>`;
-  paneDetail.querySelectorAll('[data-go]').forEach(b =>
-    b.addEventListener('click', () => { const id = +b.dataset.go; select(id); centerOn(id); }));
+  paneDetail.querySelectorAll('[data-go]').forEach(b => {
+    b.addEventListener('click', () => { const id = +b.dataset.go; setSel(id); S.focus ? fitChain(id) : centerOn(id); });
+    b.addEventListener('dblclick', () => isolate(+b.dataset.go));
+  });
 }
 
 function renderOverview(c){
@@ -871,27 +884,6 @@ function renderOverview(c){
       ${notes.map(n=>`<div class="note"><b>${esc(n.name)}</b>${esc(n.obs)}</div>`).join('')}</div>` : ''}`;
   paneOver.querySelectorAll('[data-go]').forEach(b =>
     b.addEventListener('click', () => { const id = +b.dataset.go; select(id); centerOn(id); switchPane('detail'); }));
-}
-
-/* ====================== LEGENDA ====================== */
-function buildLegend(c){
-  const lg = document.getElementById('legend');
-  const counts = {};
-  S.nodes.forEach(n => counts[n.ax] = (counts[n.ax]||0)+1);
-  lg.innerHTML = `<h4>Eixos de formação</h4>` +
-    Object.keys(c.axes).map(ax =>
-      `<button data-ax="${esc(ax)}"><i style="background:${c.axes[ax]}"></i>${esc(ax)}
-       <em style="margin-left:auto;font-style:normal;font-size:10px;color:var(--ink-3)">${counts[ax]||0}</em></button>`).join('') +
-    `<div class="foot">
-       <b>Clique</b> no eixo: oculta · <b>na disciplina</b>: abre a cadeia<br>
-       Rolagem: zoom · Arrastar: mover · <span class="key">esc</span>: limpar
-     </div>`;
-  lg.querySelectorAll('[data-ax]').forEach(b => b.addEventListener('click', () => {
-    const ax = b.dataset.ax;
-    if (S.offAxes.has(ax)) S.offAxes.delete(ax); else S.offAxes.add(ax);
-    b.classList.toggle('off', S.offAxes.has(ax));
-    paint();
-  }));
 }
 
 /* ====================== ZOOM / PAN ====================== */
@@ -978,15 +970,14 @@ function centerOn(id){
 
 let drag = null, pointers = new Map(), pinch = null;
 svg.addEventListener('pointerdown', e => {
-  svg.setPointerCapture(e.pointerId);
   pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
   if (pointers.size === 2){
     const [a,b] = [...pointers.values()];
     pinch = { d: Math.hypot(a.x-b.x, a.y-b.y) };
+    try { svg.setPointerCapture(e.pointerId); } catch(_){}
     drag = null;
   } else {
-    drag = { x:e.clientX, y:e.clientY, tx:S.tx, ty:S.ty, moved:false };
-    svg.classList.add('grabbing');
+    drag = { x:e.clientX, y:e.clientY, tx:S.tx, ty:S.ty, moved:false, id:e.pointerId };
   }
 });
 svg.addEventListener('pointermove', e => {
@@ -1001,9 +992,14 @@ svg.addEventListener('pointermove', e => {
     return;
   }
   if (drag){
+    if (!drag.moved && Math.abs(e.clientX-drag.x) + Math.abs(e.clientY-drag.y) > 4){
+      drag.moved = true;
+      svg.classList.add('grabbing');
+      try { svg.setPointerCapture(drag.id); } catch(_){}
+    }
+    if (!drag.moved) return;
     S.tx = drag.tx + (e.clientX - drag.x);
     S.ty = drag.ty + (e.clientY - drag.y);
-    if (Math.abs(e.clientX-drag.x) + Math.abs(e.clientY-drag.y) > 4) drag.moved = true;
     applyTransform();
   }
 });
@@ -1019,6 +1015,12 @@ svg.addEventListener('wheel', e => {
 }, { passive:false });
 svg.addEventListener('click', () => { if (drag && drag.moved) return;
   if (S.sel !== null){ S.sel = null; paint(); showEmptyDetail(DATA[S.course]); } });
+
+svg.addEventListener('dblclick', () => {
+  S.sel = null;
+  if (S.focus){ S.focus = false; focusBtn.classList.remove('on'); }
+  paint(); showEmptyDetail(DATA[S.course]); fit();
+});
 
 document.getElementById('zin').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 1.25); };
 document.getElementById('zout').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 0.8); };
@@ -1066,7 +1068,6 @@ document.getElementById('qclear').onclick = () => { q.value=''; runSearch(); q.f
 document.addEventListener('click', e => { if (!wrapEl.contains(e.target)) hits.classList.remove('on'); });
 
 /* ====================== BOTÕES ====================== */
-const focusBtn = document.getElementById('focusBtn');
 focusBtn.onclick = () => { S.focus = !S.focus; focusBtn.classList.toggle('on', S.focus); paint(); };
 
 const asideEl = document.getElementById('aside');
@@ -1135,7 +1136,9 @@ document.getElementById('pngBtn').onclick = () => {
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
   if (e.key === '/'){ e.preventDefault(); q.focus(); }
-  if (e.key === 'Escape'){ S.sel = null; S.hits = new Set(); q.value=''; wrapEl.classList.remove('has'); paint(); showEmptyDetail(DATA[S.course]); }
+  if (e.key === 'Escape'){ S.sel = null; S.hits = new Set(); q.value=''; wrapEl.classList.remove('has');
+    if (S.focus){ S.focus = false; focusBtn.classList.remove('on'); }
+    paint(); showEmptyDetail(DATA[S.course]); }
   if (e.key === '0'){ fit(); }
   if (e.key === '+' || e.key === '='){ const r=stage.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,1.25); }
   if (e.key === '-'){ const r=stage.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,0.8); }
