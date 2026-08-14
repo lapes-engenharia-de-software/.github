@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Grafo de pré-requisitos — CESUPA | BCC e Engenharia de Computação</title>
+<style>
+  :root{
+    --ink:#0b1220; --ink-2:#334155; --ink-3:#64748b;
+    --paper:#f6f7f9; --surface:#ffffff; --line:#dfe3ea;
+    --chrome:#0f172a; --chrome-2:#1e293b; --chrome-line:#293548;
+    --up:#1d4ed8; --down:#c2410c; --sel:#0f172a;
+    --radius:10px;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  body.dark{
+    --ink:#e8edf5; --ink-2:#b6c2d4; --ink-3:#8496ad;
+    --paper:#0b1220; --surface:#131c2e; --line:#27324a;
+    --chrome:#070c16; --chrome-2:#111a2b; --chrome-line:#1e2a40;
+    --up:#60a5fa; --down:#fb923c; --sel:#e8edf5;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font-family:var(--font);background:var(--paper);color:var(--ink);overflow:hidden;-webkit-text-size-adjust:100%}
+  button{font-family:inherit;cursor:pointer}
+  ::-webkit-scrollbar{width:9px;height:9px}
+  ::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
+
+  /* ---------- Barra superior ---------- */
+  header{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:9px 14px;background:var(--chrome);color:#e8edf5;
+    border-bottom:1px solid var(--chrome-line);position:relative;z-index:20
+  }
+  .brand{display:flex;flex-direction:column;line-height:1.15;margin-right:2px}
+  .brand b{font-size:14px;font-weight:650;letter-spacing:-.01em}
+  .brand span{font-size:10.5px;color:#8496ad;letter-spacing:.08em;text-transform:uppercase}
+  .tabs{display:flex;background:var(--chrome-2);border:1px solid var(--chrome-line);border-radius:9px;padding:3px;gap:3px}
+  .tabs button{
+    background:transparent;border:0;color:#a7b4c8;font-size:12.5px;font-weight:600;
+    padding:6px 13px;border-radius:6px;letter-spacing:.01em
+  }
+  .tabs button[aria-selected="true"]{background:#e8edf5;color:#0b1220}
+  .search{position:relative;flex:1 1 210px;max-width:330px;min-width:170px}
+  .search input{
+    width:100%;padding:8px 30px 8px 32px;border-radius:8px;font-size:13px;
+    background:var(--chrome-2);border:1px solid var(--chrome-line);color:#e8edf5;outline:none
+  }
+  .search input::placeholder{color:#64748b}
+  .search input:focus{border-color:#4b5f80}
+  .search svg{position:absolute;left:10px;top:9px;opacity:.55}
+  .search .clear{position:absolute;right:5px;top:5px;background:none;border:0;color:#8496ad;font-size:15px;padding:2px 6px;border-radius:5px;display:none}
+  .search.has .clear{display:block}
+  .hits{
+    position:absolute;top:38px;left:0;right:0;background:var(--surface);color:var(--ink);
+    border:1px solid var(--line);border-radius:9px;max-height:270px;overflow:auto;display:none;
+    box-shadow:0 12px 32px rgba(2,8,23,.28)
+  }
+  .hits.on{display:block}
+  .hits div{padding:7px 11px;font-size:12.5px;border-bottom:1px solid var(--line);display:flex;gap:8px;align-items:center}
+  .hits div:last-child{border-bottom:0}
+  .hits div:hover,.hits div.cur{background:rgba(125,145,180,.14)}
+  .hits em{font-style:normal;font-size:10.5px;color:var(--ink-3);margin-left:auto;white-space:nowrap}
+  .tools{display:flex;gap:6px;align-items:center;margin-left:auto}
+  .tool{
+    background:var(--chrome-2);border:1px solid var(--chrome-line);color:#c7d2e2;
+    border-radius:8px;padding:7px 10px;font-size:12px;font-weight:550;display:flex;align-items:center;gap:6px
+  }
+  .tool:hover{background:#243046;color:#fff}
+  .tool.on{background:#e8edf5;color:#0b1220;border-color:#e8edf5}
+  .zoomctl{display:flex;align-items:center;background:var(--chrome-2);border:1px solid var(--chrome-line);border-radius:8px;overflow:hidden}
+  .zoomctl button{background:none;border:0;color:#c7d2e2;padding:7px 11px;font-size:14px;line-height:1}
+  .zoomctl button:hover{background:#243046;color:#fff}
+  .zoomctl span{font-size:11px;color:#8496ad;min-width:44px;text-align:center;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+
+  /* ---------- Layout ---------- */
+  main{display:flex;height:calc(100% - 51px)}
+  #stage{flex:1;position:relative;overflow:hidden;background:var(--paper);touch-action:none}
+  #svg{width:100%;height:100%;display:block;cursor:grab}
+  #svg.grabbing{cursor:grabbing}
+
+  .hud{position:absolute;left:12px;bottom:12px;display:flex;gap:8px;align-items:flex-end;pointer-events:none;flex-wrap:wrap;max-width:calc(100% - 24px)}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:0 4px 18px rgba(2,8,23,.10);pointer-events:auto
+  }
+  .legend{padding:9px 11px;width:262px}
+  .legend h4{margin:0 0 7px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .legend button{
+    display:flex;align-items:center;gap:7px;width:100%;background:none;border:0;padding:3px 2px;
+    font-size:11.5px;color:var(--ink-2);text-align:left;border-radius:5px
+  }
+  .legend button:hover{background:rgba(125,145,180,.12)}
+  .legend button.off{opacity:.35}
+  .legend i{width:9px;height:9px;border-radius:3px;flex:none}
+  .legend .foot{margin-top:7px;padding-top:7px;border-top:1px solid var(--line);font-size:10.5px;color:var(--ink-3);line-height:1.5}
+  .legend .foot b{color:var(--ink-2);font-weight:600}
+  .mini{position:absolute;right:12px;bottom:12px;padding:9px 10px;width:236px;pointer-events:auto}
+  .mini h4{margin:0 0 7px;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+  .periods{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px}
+  .periods button{
+    min-width:25px;height:23px;padding:0 5px;border:1px solid var(--line);background:none;border-radius:6px;
+    font-size:11px;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums
+  }
+  .periods button:hover{background:rgba(125,145,180,.16);color:var(--ink)}
+  #mapbox{display:block;width:100%;border:1px solid var(--line);border-radius:7px;background:var(--paper);cursor:crosshair}
+  .vp{fill:rgba(37,99,235,.13);stroke:var(--up);stroke-width:14;vector-effect:non-scaling-stroke}
+  .key{display:inline-block;padding:1px 5px;border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:9.5px;color:var(--ink-2)}
+
+  /* ---------- Painel lateral ---------- */
+  aside{
+    width:352px;flex:none;background:var(--surface);border-left:1px solid var(--line);
+    display:flex;flex-direction:column;overflow:hidden
+  }
+  aside.hide{display:none}
+  .ptabs{display:flex;border-bottom:1px solid var(--line);flex:none}
+  .ptabs button{
+    flex:1;background:none;border:0;padding:11px 8px;font-size:12px;font-weight:600;color:var(--ink-3);
+    border-bottom:2px solid transparent
+  }
+  .ptabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sel)}
+  .pbody{overflow:auto;padding:16px;flex:1}
+  .pane{display:none}.pane.on{display:block}
+
+  .empty{color:var(--ink-3);font-size:12.5px;line-height:1.65;padding:26px 4px}
+  .empty b{color:var(--ink-2)}
+
+  .dtitle{font-size:17px;font-weight:650;line-height:1.28;letter-spacing:-.015em;margin:0 0 8px}
+  .dchips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .chip{font-size:10.5px;padding:3px 8px;border-radius:20px;border:1px solid var(--line);color:var(--ink-2);display:flex;align-items:center;gap:5px}
+  .chip i{width:7px;height:7px;border-radius:50%}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .stat{border:1px solid var(--line);border-radius:9px;padding:9px 10px}
+  .stat b{display:block;font-size:20px;font-weight:650;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stat span{font-size:10px;color:var(--ink-3);letter-spacing:.03em;text-transform:uppercase;font-weight:600}
+  .stat.up b{color:var(--up)} .stat.down b{color:var(--down)}
+
+  .sect{margin-bottom:16px}
+  .sect h5{
+    font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+    margin:0 0 8px;font-weight:700;display:flex;align-items:center;gap:7px
+  }
+  .sect h5 s{flex:1;height:1px;background:var(--line);text-decoration:none}
+  .list{display:flex;flex-direction:column;gap:3px}
+  .item{
+    display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:7px;font-size:12.5px;
+    background:none;border:0;width:100%;text-align:left;color:var(--ink-2);line-height:1.35
+  }
+  .item:hover{background:rgba(125,145,180,.14);color:var(--ink)}
+  .item i{width:3px;align-self:stretch;border-radius:2px;flex:none}
+  .item em{font-style:normal;font-size:10px;color:var(--ink-3);margin-left:auto;font-family:var(--mono);white-space:nowrap}
+  .orbox{border:1px dashed var(--line);border-radius:8px;padding:5px 6px;margin-bottom:3px}
+  .orbox .ortag{font-size:9.5px;color:var(--ink-3);letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:0 4px 3px}
+  .note{
+    font-size:11.5px;line-height:1.6;color:var(--ink-2);background:rgba(180,83,9,.09);
+    border-left:2px solid #b45309;border-radius:0 7px 7px 0;padding:9px 11px;margin-bottom:14px
+  }
+  .note b{display:block;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#b45309;margin-bottom:3px}
+  .bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:5px}
+  .bar i{display:block;height:100%;border-radius:3px}
+  .rank{display:flex;flex-direction:column;gap:9px}
+  .rank .r{font-size:12px;color:var(--ink-2)}
+  .rank .r span{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .rank .r b{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-weight:500}
+  .rank .r u{text-decoration:none;cursor:pointer}
+  .rank .r u:hover{text-decoration:underline}
+
+  /* ---------- Responsivo ---------- */
+  @media (max-width:860px){
+    main{flex-direction:column}
+    aside{width:100%;height:44%;border-left:0;border-top:1px solid var(--line)}
+    .brand{display:none}
+    .hud{left:8px;bottom:8px}
+    .legend{width:210px;max-height:168px;overflow:auto}
+    .legend .foot{display:none}
+  }
+  @media (max-width:700px){
+    .legend{display:none}
+    .mini{left:8px;right:8px;bottom:8px;width:auto;padding:7px 8px}
+    .mini h4,#mapbox{display:none}
+    .periods{flex-wrap:nowrap;overflow-x:auto;margin-bottom:0;-webkit-overflow-scrolling:touch}
+    .periods button{flex:none}
+    header{gap:8px;padding:8px 10px}
+    .tools{gap:5px}
+  }
+  @media print{
+    header,aside,.hud{display:none!important}
+    main{height:100%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><b>Grafo de pré-requisitos</b><span>CESUPA · Matriz curricular</span></div>
+
+  <div class="tabs" role="tablist" id="courseTabs"></div>
+
+  <div class="search" id="searchWrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input id="q" type="text" placeholder="Buscar disciplina…  ( / )" autocomplete="off" spellcheck="false">
+    <button class="clear" id="qclear" title="Limpar">×</button>
+    <div class="hits" id="hits"></div>
+  </div>
+
+  <div class="tools">
+    <button class="tool" id="focusBtn" title="Ao selecionar, esconde tudo que não faz parte da cadeia (F)">Foco</button>
+    <div class="zoomctl">
+      <button id="zout" title="Menos zoom (−)">−</button>
+      <span id="zlvl">100%</span>
+      <button id="zin" title="Mais zoom (+)">+</button>
+    </div>
+    <button class="tool" id="fitBtn" title="Ajustar à tela (0)">Ajustar</button>
+    <button class="tool" id="pngBtn" title="Baixar imagem PNG em alta resolução">PNG</button>
+    <button class="tool" id="svgBtn" title="Baixar vetor SVG">SVG</button>
+    <button class="tool" id="themeBtn" title="Alternar tema claro/escuro">◐</button>
+    <button class="tool" id="asideBtn" title="Mostrar/ocultar painel">☰</button>
+  </div>
+</header>
+
+<main>
+  <div id="stage">
+    <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="hud">
+      <div class="card legend" id="legend"></div>
+    </div>
+    <div class="card mini" id="mini">
+      <h4>Ir para o período</h4>
+      <div class="periods" id="periods"></div>
+      <svg id="mapbox"></svg>
+    </div>
+  </div>
+
+  <aside id="aside">
+    <div class="ptabs" role="tablist">
+      <button role="tab" aria-selected="true" data-pane="detail">Disciplina</button>
+      <button role="tab" aria-selected="false" data-pane="overview">Visão do curso</button>
+    </div>
+    <div class="pbody">
+      <div class="pane on" id="pane-detail"></div>
+      <div class="pane" id="pane-overview"></div>
+    </div>
+  </aside>
+</main>
+
+<script>
+/* ====================== DADOS ====================== */
+/* Matrizes de pré-requisitos — CESUPA
+   prereq: lista de GRUPOS. Todos os grupos devem ser cumpridos (AND).
+   Dentro de um grupo, qualquer item satisfaz (OR). */
+
+const DATA = {
+  bcc: {
+    label: "Bacharelado em Ciência da Computação",
+    short: "BCC",
+    periods: 8,
+    axes: {
+      "Programação e algoritmos": "#2563eb",
+      "Teoria da computação": "#7c3aed",
+      "Matemática": "#0d9488",
+      "Hardware e embarcados": "#b45309",
+      "Redes e sistemas": "#0369a1",
+      "Dados e IA": "#be123c",
+      "Engenharia de software": "#4d7c0f",
+      "Gráfica e imagens": "#9333ea",
+      "Formação e projetos": "#525252"
+    },
+    disciplines: [
+      // 1º
+      { n: "Álgebra Linear", p: 1, ax: "Matemática", pre: [] },
+      { n: "Programação de Software", p: 1, ax: "Programação e algoritmos", pre: [] },
+      { n: "Algoritmo e Codificação de Sistema", p: 1, ax: "Programação e algoritmos", pre: [] },
+      { n: "Pensamento Computacional para Cientista", p: 1, ax: "Hardware e embarcados", pre: [] },
+      { n: "Lógica Digital", p: 1, ax: "Hardware e embarcados", pre: [] },
+      { n: "Negócios Digitais", p: 1, ax: "Formação e projetos", pre: [] },
+      // 2º
+      { n: "Resolução Discreta de Problemas", p: 2, ax: "Teoria da computação", pre: [["Lógica Digital"]] },
+      { n: "Programação Orientada a Objetos", p: 2, ax: "Programação e algoritmos", pre: [["Programação de Software"], ["Algoritmo e Codificação de Sistema"]] },
+      { n: "Laboratório de Desenvolvimento Web", p: 2, ax: "Engenharia de software", pre: [["Programação de Software", "Algoritmo e Codificação de Sistema"]] },
+      { n: "Arquitetura e Organização de Computadores", p: 2, ax: "Hardware e embarcados", pre: [["Pensamento Computacional para Cientista"]] },
+      { n: "Laboratório de Eletricidade e Eletrônica", p: 2, ax: "Hardware e embarcados", pre: [] },
+      { n: "Modelagem e Prototipação de Produto", p: 2, ax: "Engenharia de software", pre: [] },
+      { n: "Metodologia Acadêmica", p: 2, ax: "Formação e projetos", pre: [] },
+      // 3º
+      { n: "Estatística e Probabilidade", p: 3, ax: "Matemática", pre: [["Resolução Discreta de Problemas"]] },
+      { n: "Estrutura de Dados", p: 3, ax: "Programação e algoritmos", pre: [["Programação Orientada a Objetos"]] },
+      { n: "Sistemas Operacionais", p: 3, ax: "Redes e sistemas", pre: [["Arquitetura e Organização de Computadores"]] },
+      { n: "Laboratório de Circuitos Lógicos Digitais", p: 3, ax: "Hardware e embarcados", pre: [["Lógica Digital"], ["Laboratório de Eletricidade e Eletrônica"]] },
+      { n: "Laboratório de Sistemas Embarcados", p: 3, ax: "Hardware e embarcados", pre: [["Programação de Software", "Algoritmo e Codificação de Sistema"], ["Arquitetura e Organização de Computadores"], ["Laboratório de Eletricidade e Eletrônica"]] },
+      { n: "Interface de Software", p: 3, ax: "Engenharia de software", pre: [["Modelagem e Prototipação de Produto"], ["Programação de Software", "Laboratório de Desenvolvimento Web"]] },
+      { n: "Projeto Integrado 1", p: 3, ax: "Formação e projetos", pre: [["Metodologia Acadêmica"], ["Programação de Software", "Algoritmo e Codificação de Sistema"], ["Negócios Digitais"]] },
+      // 4º
+      { n: "Resolução Diferencial de Problemas", p: 4, ax: "Matemática", pre: [["Álgebra Linear"]] },
+      { n: "Modelagem Estatística", p: 4, ax: "Dados e IA", pre: [["Estatística e Probabilidade"]] },
+      { n: "Teoria de Grafos", p: 4, ax: "Teoria da computação", pre: [["Resolução Discreta de Problemas"], ["Estrutura de Dados"]] },
+      { n: "Telecomunicações e Infraestrutura de Redes", p: 4, ax: "Redes e sistemas", pre: [["Arquitetura e Organização de Computadores"]] },
+      { n: "Laboratório de Programação Avançada [DevOps]", p: 4, ax: "Engenharia de software", pre: [["Laboratório de Desenvolvimento Web"]], obs: "No documento consta \"Programação de Desenvolvimento Web\"; a única disciplina correspondente na matriz é Laboratório de Desenvolvimento Web." },
+      { n: "Banco de Dados", p: 4, ax: "Dados e IA", pre: [["Lógica Digital"], ["Programação Orientada a Objetos"]] },
+      { n: "Engenharia de Software", p: 4, ax: "Engenharia de software", pre: [["Interface de Software"]] },
+      // 5º
+      { n: "Resolução de Problemas Multivariáveis", p: 5, ax: "Matemática", pre: [["Resolução Diferencial de Problemas"]] },
+      { n: "Teoria da Computabilidade", p: 5, ax: "Teoria da computação", pre: [["Resolução Discreta de Problemas"], ["Teoria de Grafos"]] },
+      { n: "Redes de Computadores - TCP/IP e SNMP", p: 5, ax: "Redes e sistemas", pre: [["Telecomunicações e Infraestrutura de Redes"]] },
+      { n: "Ciência de Dados", p: 5, ax: "Dados e IA", pre: [["Banco de Dados"], ["Modelagem Estatística"]] },
+      { n: "Inteligência Artificial e Computacional", p: 5, ax: "Dados e IA", pre: [["Estrutura de Dados"], ["Teoria de Grafos"]] },
+      { n: "Qualidade e Projeto de Software", p: 5, ax: "Engenharia de software", pre: [["Engenharia de Software"]] },
+      { n: "Projeto Integrado 2", p: 5, ax: "Formação e projetos", pre: [["Metodologia Acadêmica"], ["Programação de Software", "Algoritmo e Codificação de Sistema"], ["Negócios Digitais"]] },
+      // 6º
+      { n: "Análise e Projeto de Algoritmos", p: 6, ax: "Programação e algoritmos", pre: [["Estrutura de Dados"], ["Teoria de Grafos"]] },
+      { n: "Linguagens Formais e Autômatos", p: 6, ax: "Teoria da computação", pre: [["Teoria da Computabilidade"], ["Resolução Discreta de Problemas"]] },
+      { n: "Interconexão de Redes e Data Center", p: 6, ax: "Redes e sistemas", pre: [["Redes de Computadores - TCP/IP e SNMP"]] },
+      { n: "Sistemas Distribuídos e Paralelos", p: 6, ax: "Redes e sistemas", pre: [["Sistemas Operacionais"], ["Redes de Computadores - TCP/IP e SNMP"], ["Estrutura de Dados"]] },
+      { n: "Tecnologias Mobile", p: 6, ax: "Engenharia de software", pre: [["Laboratório de Programação Avançada [DevOps]"], ["Interface de Software"]] },
+      { n: "Machine Learning e Deep Learning", p: 6, ax: "Dados e IA", pre: [["Modelagem Estatística"], ["Ciência de Dados"], ["Resolução de Problemas Multivariáveis"], ["Inteligência Artificial e Computacional"]] },
+      { n: "Eletiva 1", p: 6, ax: "Formação e projetos", pre: [] },
+      // 7º
+      { n: "Compiladores", p: 7, ax: "Teoria da computação", pre: [["Linguagens Formais e Autômatos"], ["Teoria da Computabilidade"]] },
+      { n: "Computação em Nuvem", p: 7, ax: "Redes e sistemas", pre: [["Sistemas Distribuídos e Paralelos"], ["Interconexão de Redes e Data Center"]] },
+      { n: "Computação Gráfica", p: 7, ax: "Gráfica e imagens", pre: [["Álgebra Linear"], ["Programação de Software"], ["Resolução Diferencial de Problemas"]] },
+      { n: "IA Generativa", p: 7, ax: "Dados e IA", pre: [["Machine Learning e Deep Learning"], ["Inteligência Artificial e Computacional"]] },
+      { n: "Projeto Integrado 3", p: 7, ax: "Formação e projetos", pre: [["Metodologia Acadêmica"], ["Programação de Software", "Algoritmo e Codificação de Sistema"], ["Negócios Digitais"]] },
+      { n: "Trabalho de Curso 1", p: 7, ax: "Formação e projetos", pre: [["Metodologia Acadêmica"]] },
+      { n: "Eletiva 2", p: 7, ax: "Formação e projetos", pre: [] },
+      // 8º
+      { n: "Laboratório de Programação Multi-Paradigmas", p: 8, ax: "Programação e algoritmos", pre: [["Programação Orientada a Objetos"], ["Análise e Projeto de Algoritmos"]] },
+      { n: "Segurança da Informação", p: 8, ax: "Redes e sistemas", pre: [["Redes de Computadores - TCP/IP e SNMP"], ["Interconexão de Redes e Data Center"]] },
+      { n: "Avaliação de Desempenho de Sistemas", p: 8, ax: "Redes e sistemas", pre: [["Modelagem Estatística"], ["Sistemas Distribuídos e Paralelos"]] },
+      { n: "Processamento de Imagens", p: 8, ax: "Gráfica e imagens", pre: [["Computação Gráfica"]] },
+      { n: "Tópicos Especiais em Computação", p: 8, ax: "Formação e projetos", pre: [] },
+      { n: "Trabalho de Curso 2", p: 8, ax: "Formação e projetos", pre: [["Trabalho de Curso 1"]] }
+    ]
+  },
+
+  ecomp: {
+    label: "Engenharia de Computação",
+    short: "ECOMP",
+    periods: 10,
+    axes: {
+      "Matemática": "#0d9488",
+      "Física e materiais": "#0891b2",
+      "Programação e computação": "#2563eb",
+      "Eletrônica e embarcados": "#b45309",
+      "Automação e controle": "#c2410c",
+      "Redes e sistemas": "#0369a1",
+      "Dados e IA": "#be123c",
+      "Software e produto": "#4d7c0f",
+      "Gestão e projetos": "#525252"
+    },
+    disciplines: [
+      // 1º
+      { n: "Cálculo 1", p: 1, ax: "Matemática", pre: [] },
+      { n: "Álgebra Linear", p: 1, ax: "Matemática", pre: [] },
+      { n: "Programação 1", p: 1, ax: "Programação e computação", pre: [] },
+      { n: "Introdução à Eng. Computação", p: 1, ax: "Eletrônica e embarcados", pre: [] },
+      { n: "Lógica Digital", p: 1, ax: "Eletrônica e embarcados", pre: [] },
+      { n: "Metodologia Científica", p: 1, ax: "Gestão e projetos", pre: [] },
+      // 2º
+      { n: "Cálculo 2", p: 2, ax: "Matemática", pre: [["Cálculo 1"]] },
+      { n: "Expressão Gráfica", p: 2, ax: "Software e produto", pre: [] },
+      { n: "Física 1", p: 2, ax: "Física e materiais", pre: [] },
+      { n: "Programação 2", p: 2, ax: "Programação e computação", pre: [["Programação 1"]] },
+      { n: "Arquitetura e Organização de Computadores", p: 2, ax: "Eletrônica e embarcados", pre: [["Introdução à Eng. Computação"]] },
+      { n: "Laboratório de Tecnologias Hands-On", p: 2, ax: "Programação e computação", pre: [] },
+      { n: "Negócios Digitais e Sustentáveis", p: 2, ax: "Gestão e projetos", pre: [] },
+      // 3º
+      { n: "Cálculo 3", p: 3, ax: "Matemática", pre: [["Cálculo 2"]] },
+      { n: "Física 2", p: 3, ax: "Física e materiais", pre: [["Física 1"]] },
+      { n: "Ciência dos Materiais", p: 3, ax: "Física e materiais", pre: [] },
+      { n: "Estrutura de Dados e Algoritmos de Alta Performance", p: 3, ax: "Programação e computação", pre: [["Programação 2"]] },
+      { n: "Prototipação de Produtos e Interface HM", p: 3, ax: "Software e produto", pre: [["Programação 1"], ["Expressão Gráfica"]] },
+      { n: "Eletrônica Analógica", p: 3, ax: "Eletrônica e embarcados", pre: [["Laboratório de Tecnologias Hands-On"]], obs: "O documento registra inversão curricular a deliberar pelo NDE: o conteúdo de eletricidade de que depende está no 4º período." },
+      { n: "Projeto Integrado 1", p: 3, ax: "Gestão e projetos", pre: [["Metodologia Científica"], ["Programação 1"], ["Negócios Digitais e Sustentáveis"]] },
+      // 4º
+      { n: "Cálculo 4", p: 4, ax: "Matemática", pre: [["Cálculo 2"], ["Álgebra Linear"]] },
+      { n: "Prob. Estatística Experimental", p: 4, ax: "Dados e IA", pre: [["Programação 1"]] },
+      { n: "Física 3", p: 4, ax: "Física e materiais", pre: [["Física 1"], ["Cálculo 2"]] },
+      { n: "Sistemas Operacionais", p: 4, ax: "Redes e sistemas", pre: [["Arquitetura e Organização de Computadores"]] },
+      { n: "Redes de Computadores [TCP/IP e SNMP]", p: 4, ax: "Redes e sistemas", pre: [["Arquitetura e Organização de Computadores"]] },
+      { n: "Eletrônica Digital", p: 4, ax: "Eletrônica e embarcados", pre: [["Lógica Digital"], ["Laboratório de Tecnologias Hands-On"]] },
+      { n: "Análise e Projeto de Circuitos", p: 4, ax: "Eletrônica e embarcados", pre: [["Eletrônica Analógica"]] },
+      // 5º
+      { n: "Pesquisa Operacional", p: 5, ax: "Matemática", pre: [["Álgebra Linear"], ["Programação 1"]] },
+      { n: "Modelagem Estatística", p: 5, ax: "Dados e IA", pre: [["Prob. Estatística Experimental"], ["Cálculo 1"]] },
+      { n: "Banco de Dados", p: 5, ax: "Dados e IA", pre: [["Lógica Digital"], ["Programação 2"]] },
+      { n: "Interconexão de Redes e Redes GPON", p: 5, ax: "Redes e sistemas", pre: [["Redes de Computadores [TCP/IP e SNMP]"]] },
+      { n: "Sistemas Embarcados para IoT", p: 5, ax: "Eletrônica e embarcados", pre: [["Eletrônica Digital"], ["Análise e Projeto de Circuitos"], ["Programação 1"], ["Arquitetura e Organização de Computadores"], ["Redes de Computadores [TCP/IP e SNMP]"]] },
+      { n: "Projeto Integrado 2", p: 5, ax: "Gestão e projetos", pre: [["Metodologia Científica"], ["Programação 1"], ["Negócios Digitais e Sustentáveis"]] },
+      { n: "Administração e Gestão", p: 5, ax: "Gestão e projetos", pre: [] },
+      // 6º
+      { n: "Cálculo Numérico", p: 6, ax: "Matemática", pre: [["Álgebra Linear"], ["Programação 1"], ["Cálculo 3"]] },
+      { n: "Teoria de Grafos e Matemática Discreta", p: 6, ax: "Programação e computação", pre: [["Lógica Digital"], ["Estrutura de Dados e Algoritmos de Alta Performance"]] },
+      { n: "Ciência de Dados", p: 6, ax: "Dados e IA", pre: [["Banco de Dados"], ["Modelagem Estatística"]] },
+      { n: "Mecânica e Resistência dos Materiais", p: 6, ax: "Física e materiais", pre: [["Cálculo 2"], ["Ciência dos Materiais"]] },
+      { n: "Inteligência Artificial e Bioinspirada", p: 6, ax: "Dados e IA", pre: [["Estrutura de Dados e Algoritmos de Alta Performance"]] },
+      { n: "Tecnologia de Automação Industrial", p: 6, ax: "Automação e controle", pre: [["Eletrônica Digital"], ["Eletrônica Analógica"], ["Sistemas Embarcados para IoT"]] },
+      { n: "Sinais e Sistemas", p: 6, ax: "Eletrônica e embarcados", pre: [["Cálculo 3"], ["Análise e Projeto de Circuitos"]] },
+      // 7º
+      { n: "Engenharia de Software", p: 7, ax: "Software e produto", pre: [["Prototipação de Produtos e Interface HM"]] },
+      { n: "Química e Meio Ambiente", p: 7, ax: "Física e materiais", pre: [] },
+      { n: "Machine Learning e Deep Learning", p: 7, ax: "Dados e IA", pre: [["Cálculo 2"], ["Modelagem Estatística"], ["Ciência de Dados"], ["Inteligência Artificial e Bioinspirada"]] },
+      { n: "Redes de Automação", p: 7, ax: "Automação e controle", pre: [["Redes de Computadores [TCP/IP e SNMP]"], ["Tecnologia de Automação Industrial"]] },
+      { n: "Projeto Integrado 3", p: 7, ax: "Gestão e projetos", pre: [["Metodologia Científica"], ["Programação 1"], ["Negócios Digitais e Sustentáveis"]] },
+      { n: "Gerência de Manutenção", p: 7, ax: "Gestão e projetos", pre: [] },
+      // 8º
+      { n: "Fenômenos de Transporte", p: 8, ax: "Física e materiais", pre: [["Física 2"], ["Mecânica e Resistência dos Materiais"]] },
+      { n: "Segurança da Informação", p: 8, ax: "Redes e sistemas", pre: [["Interconexão de Redes e Redes GPON"], ["Sistemas Operacionais"], ["Teoria de Grafos e Matemática Discreta"]] },
+      { n: "Autômatos e Compiladores", p: 8, ax: "Programação e computação", pre: [["Teoria de Grafos e Matemática Discreta"]] },
+      { n: "Sistemas de Controle e Robótica", p: 8, ax: "Automação e controle", pre: [["Sinais e Sistemas"], ["Mecânica e Resistência dos Materiais"], ["Tecnologia de Automação Industrial"]] },
+      { n: "Eletiva 1", p: 8, ax: "Gestão e projetos", pre: [] },
+      // 9º
+      { n: "Processamento de Imagem", p: 9, ax: "Dados e IA", pre: [["Álgebra Linear"], ["Cálculo 1"], ["Teoria de Grafos e Matemática Discreta"]] },
+      { n: "Computação em Nuvem", p: 9, ax: "Redes e sistemas", pre: [["Sistemas Operacionais"], ["Interconexão de Redes e Redes GPON"], ["Programação 1"]] },
+      { n: "Projeto de Data Center", p: 9, ax: "Redes e sistemas", pre: [["Segurança da Informação"]] },
+      { n: "Projeto de Sistemas Digitais [FPGA]", p: 9, ax: "Eletrônica e embarcados", pre: [["Sistemas Embarcados para IoT"]] },
+      { n: "Trabalho de Curso 1", p: 9, ax: "Gestão e projetos", pre: [["Metodologia Científica"]] },
+      { n: "Eletiva 2", p: 9, ax: "Gestão e projetos", pre: [] },
+      // 10º
+      { n: "Ergonomia e Segurança do Trabalho", p: 10, ax: "Gestão e projetos", pre: [] },
+      { n: "Instalações Elétricas Prediais", p: 10, ax: "Eletrônica e embarcados", pre: [["Expressão Gráfica"], ["Física 3"]] },
+      { n: "Tópicos Especiais em Eng. Comp.", p: 10, ax: "Gestão e projetos", pre: [] },
+      { n: "Trabalho de Curso 2", p: 10, ax: "Gestão e projetos", pre: [["Trabalho de Curso 1"]] }
+    ]
+  }
+};
+
+/* ====================== ESTILO DO GRAFO (também usado na exportação) ====================== */
+const GRAPH_CSS = `
+  .canvas{ --nbg:#ffffff; --nline:#d7dde7; --ntext:#0b1220; --nmeta:#7b8798;
+           --band:#eceff4; --bandalt:#f4f6f9; --hdr:#94a3b8; --edge:#9aa6b8;
+           --up:#1d4ed8; --down:#c2410c; --selring:#0b1220; --dim:.09; }
+  text{ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif; }
+  .band{ fill:var(--band); }
+  .band.alt{ fill:var(--bandalt); }
+  .hdrnum{ font-size:26px; font-weight:700; fill:var(--hdr); opacity:.5; letter-spacing:-.02em; }
+  .hdrtxt{ font-size:10.5px; font-weight:700; fill:var(--hdr); letter-spacing:.13em; }
+  .edge{ fill:none; stroke:var(--edge); stroke-width:1.4; opacity:.34; marker-end:url(#ar); transition:opacity .13s, stroke .13s, stroke-width .13s; }
+  .edge.or{ stroke-dasharray:5 4; }
+  .edge.up{ stroke:var(--up); opacity:.95; stroke-width:2.1; marker-end:url(#ar-up); }
+  .edge.down{ stroke:var(--down); opacity:.95; stroke-width:2.1; marker-end:url(#ar-down); }
+  .edge.mute{ opacity:.05; }
+  .node{ cursor:pointer; }
+  .nbox{ fill:var(--nbg); stroke:var(--nline); stroke-width:1.2; }
+  .nbar{ stroke:none; }
+  .nlabel{ font-size:12.5px; font-weight:600; fill:var(--ntext); letter-spacing:-.005em; }
+  .nmeta{ font-size:9.5px; font-weight:600; fill:var(--nmeta); letter-spacing:.04em; }
+  .node:hover .nbox{ stroke:var(--selring); stroke-width:1.8; }
+  .node.up .nbox{ stroke:var(--up); stroke-width:2; }
+  .node.up .nmeta{ fill:var(--up); }
+  .node.down .nbox{ stroke:var(--down); stroke-width:2; }
+  .node.down .nmeta{ fill:var(--down); }
+  .node.sel .nbox{ stroke:var(--selring); stroke-width:2.6; }
+  .node.hit .nbox{ stroke:#b45309; stroke-width:2.4; }
+  .node.mute{ opacity:var(--dim); }
+  .node.gone{ display:none; }
+  .edge.gone{ display:none; }
+  .nlabel-far{ font-size:15px; font-weight:650; fill:var(--ntext); display:none; }
+  .canvas.far .nlabel, .canvas.far .nmeta{ display:none; }
+  .canvas.far .nlabel-far{ display:block; }
+  .canvas.far .nbox{ stroke-width:1.6; }
+  .canvas.far .edge{ stroke-width:2.2; opacity:.40; }
+  .canvas.far .edge.up, .canvas.far .edge.down{ stroke-width:3.4; }
+  .ring{ fill:none; stroke:var(--selring); stroke-width:1.1; opacity:.35; }
+`;
+const GRAPH_CSS_DARK = `
+  .canvas{ --nbg:#16203a; --nline:#2c3a57; --ntext:#e8edf5; --nmeta:#7f90ab;
+           --band:#0e1728; --bandalt:#101b2f; --hdr:#5b6c88; --edge:#5d6f92; --up:#60a5fa; --down:#fb923c; --selring:#e8edf5; --dim:.08; }
+`;
+
+/* ====================== CONSTANTES DE LAYOUT ====================== */
+const NW = 232, PADX = 13, LINE_H = 16, PAD_TOP = 12, META_H = 20, PAD_BOT = 10;
+const COL_GAP = 74, ROW_GAP = 14, BAND_PAD = 20, TOP_PAD = 88;
+const MIN_H = 68;
+
+/* ====================== ESTADO ====================== */
+const S = { course:null, nodes:[], byName:{}, edges:[], W:0, H:0,
+            k:1, tx:0, ty:0, sel:null, focus:false, offAxes:new Set(), hits:new Set() };
+
+const svg = document.getElementById('svg');
+const stage = document.getElementById('stage');
+let gRoot, gEdges, gNodes;
+
+/* ---------- medição de texto ---------- */
+const mctx = document.createElement('canvas').getContext('2d');
+const FONT_SM = '600 12.5px -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif';
+const FONT_LG = '650 15px -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif';
+mctx.font = '600 12.5px -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif';
+function wrap(text, maxW, maxLines){
+  const words = text.split(' '); const lines = []; let cur = '';
+  for (const w of words){
+    const t = cur ? cur + ' ' + w : w;
+    if (mctx.measureText(t).width <= maxW || !cur) cur = t;
+    else { lines.push(cur); cur = w; }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines){
+    const keep = lines.slice(0, maxLines);
+    let last = keep[maxLines-1];
+    while (mctx.measureText(last + '…').width > maxW && last.length > 4) last = last.slice(0,-1);
+    keep[maxLines-1] = last.replace(/[ ,]$/,'') + '…';
+    return keep;
+  }
+  return lines;
+}
+
+/* ====================== CONSTRUÇÃO DO GRAFO ====================== */
+function build(courseKey){
+  const c = DATA[courseKey];
+  S.course = courseKey; S.sel = null; S.hits = new Set(); S.offAxes = new Set();
+
+  S.nodes = c.disciplines.map((d,i) => {
+    mctx.font = FONT_SM;
+    const lines = wrap(d.n, NW - PADX*2 - 6, 3);
+    mctx.font = FONT_LG;
+    const farLines = wrap(d.n, NW - PADX*2 - 6, 3);
+    mctx.font = FONT_SM;
+    return { id:i, name:d.n, p:d.p, ax:d.ax, color:c.axes[d.ax], obs:d.obs||null,
+             groups:d.pre, lines, farLines, w:NW,
+             h: Math.max(MIN_H, PAD_TOP + lines.length*LINE_H + META_H + PAD_BOT,
+                         PAD_TOP + farLines.length*18 + PAD_BOT),
+             pre:[], suc:[], preGroups:[], x:0, y:0 };
+  });
+  S.byName = {}; S.nodes.forEach(n => S.byName[n.name] = n);
+
+  S.edges = [];
+  S.nodes.forEach(n => {
+    n.preGroups = n.groups.map(g => g.map(name => S.byName[name].id));
+    n.groups.forEach(g => {
+      const or = g.length > 1;
+      g.forEach(name => {
+        const s = S.byName[name];
+        S.edges.push({ s:s.id, t:n.id, or });
+        if (!n.pre.includes(s.id)) n.pre.push(s.id);
+        if (!s.suc.includes(n.id)) s.suc.push(n.id);
+      });
+    });
+  });
+
+  computeReach();
+  layout(c);
+  render(c);
+  buildLegend(c);
+  buildMinimap();
+  buildPeriods(c);
+  renderOverview(c);
+  showEmptyDetail(c);
+  requestAnimationFrame(() => {
+    if (stage.getBoundingClientRect().width < 700) zoomToPeriod(1); else fit();
+  });
+}
+
+/* ancestrais / descendentes (memoizados) */
+function computeReach(){
+  const anc = S.nodes.map(()=>null), des = S.nodes.map(()=>null);
+  const goA = i => { if (anc[i]) return anc[i]; const s = new Set(); anc[i]=s;
+    S.nodes[i].pre.forEach(p => { s.add(p); goA(p).forEach(x=>s.add(x)); }); return s; };
+  const goD = i => { if (des[i]) return des[i]; const s = new Set(); des[i]=s;
+    S.nodes[i].suc.forEach(p => { s.add(p); goD(p).forEach(x=>s.add(x)); }); return s; };
+  S.nodes.forEach((n,i) => { n.anc = goA(i); n.des = goD(i); });
+  // profundidade = maior caminho até uma disciplina de entrada
+  const dep = S.nodes.map(()=>-1);
+  const goDep = i => { if (dep[i] >= 0) return dep[i]; dep[i]=0;
+    dep[i] = S.nodes[i].pre.length ? 1 + Math.max(...S.nodes[i].pre.map(goDep)) : 0; return dep[i]; };
+  S.nodes.forEach((n,i) => n.depth = goDep(i));
+}
+
+/* ---------- posicionamento em camadas + baricentro ---------- */
+function layout(c){
+  const cols = [];
+  for (let p = 1; p <= c.periods; p++) cols.push(S.nodes.filter(n => n.p === p));
+
+  const stack = col => {
+    let y = 0;
+    col.forEach(n => { n.y = y; y += n.h + ROW_GAP; });
+    return y - ROW_GAP;
+  };
+  cols.forEach(stack);
+
+  const center = n => n.y + n.h/2;
+  for (let it = 0; it < 14; it++){
+    const dir = it % 2 === 0;
+    const order = dir ? cols : [...cols].reverse();
+    order.forEach((col, ci) => {
+      if ((dir && ci === 0) || (!dir && ci === 0)) return;
+      col.forEach(n => {
+        const nb = dir ? n.pre : n.suc;
+        n._bc = nb.length ? nb.reduce((a,b)=>a+center(S.nodes[b]),0)/nb.length : center(n);
+      });
+      col.sort((a,b) => (a._bc - b._bc) || (a.id - b.id));
+      stack(col);
+    });
+  }
+
+  const heights = cols.map(col => col.reduce((a,n)=>a+n.h+ROW_GAP,0) - ROW_GAP);
+  const maxH = Math.max(...heights);
+  cols.forEach((col, i) => {
+    const off = (maxH - heights[i]) / 2;
+    const x = i * (NW + COL_GAP);
+    col.forEach(n => { n.x = x; n.y += off + TOP_PAD; });
+    col.band = { x: x - BAND_PAD, w: NW + BAND_PAD*2, p: i+1 };
+  });
+  S.cols = cols;
+  S.W = c.periods * (NW + COL_GAP) - COL_GAP + BAND_PAD*2;
+  S.H = maxH + TOP_PAD + 60;
+}
+
+/* ---------- desenho ---------- */
+const NS = 'http://www.w3.org/2000/svg';
+const el = (t, a={}) => { const e = document.createElementNS(NS, t);
+  for (const k in a) e.setAttribute(k, a[k]); return e; };
+
+function arrow(id, cls){
+  const m = el('marker', { id, viewBox:'0 0 10 10', refX:'9', refY:'5',
+    markerWidth:'6.5', markerHeight:'6.5', orient:'auto-start-reverse' });
+  m.appendChild(el('path', { d:'M0,0.6 L10,5 L0,9.4 z', class:cls }));
+  return m;
+}
+
+function render(c){
+  svg.textContent = '';
+  const defs = el('defs');
+  const st = el('style'); st.textContent = GRAPH_CSS + (document.body.classList.contains('dark') ? GRAPH_CSS_DARK : '');
+  defs.appendChild(st);
+  const mk = (id, color) => { const m = arrow(id); m.firstChild.setAttribute('fill', color); return m; };
+  defs.appendChild(mk('ar', 'var(--edge)'));
+  defs.appendChild(mk('ar-up', 'var(--up)'));
+  defs.appendChild(mk('ar-down', 'var(--down)'));
+  svg.appendChild(defs);
+
+  gRoot = el('g', { class:'canvas' + (document.body.classList.contains('dark') ? ' dark' : '') });
+  svg.appendChild(gRoot);
+
+  const gBands = el('g'); gRoot.appendChild(gBands);
+  gEdges = el('g'); gRoot.appendChild(gEdges);
+  gNodes = el('g'); gRoot.appendChild(gNodes);
+
+  S.cols.forEach((col, i) => {
+    const b = col.band;
+    gBands.appendChild(el('rect', { class:'band' + (i%2 ? ' alt' : ''),
+      x:b.x, y:0, width:b.w, height:S.H, rx:14 }));
+    const t1 = el('text', { class:'hdrnum', x:b.x + 16, y:52 }); t1.textContent = i+1 + 'º';
+    const t2 = el('text', { class:'hdrtxt', x:b.x + 16, y:70 }); t2.textContent = 'PERÍODO';
+    gBands.appendChild(t1); gBands.appendChild(t2);
+  });
+
+  S.edges.forEach((e, i) => {
+    const a = S.nodes[e.s], b = S.nodes[e.t];
+    const x1 = a.x + a.w, y1 = a.y + a.h/2, x2 = b.x - 6, y2 = b.y + b.h/2;
+    const dx = Math.max(38, (x2 - x1) * 0.44);
+    const p = el('path', { class:'edge' + (e.or ? ' or' : ''),
+      d:`M${x1},${y1} C${x1+dx},${y1} ${x2-dx},${y2} ${x2},${y2}` });
+    p.dataset.s = e.s; p.dataset.t = e.t; e.el = p;
+    gEdges.appendChild(p);
+  });
+
+  S.nodes.forEach(n => {
+    const g = el('g', { class:'node', transform:`translate(${n.x},${n.y})` });
+    g.dataset.id = n.id;
+    g.appendChild(el('rect', { class:'nbox', width:n.w, height:n.h, rx:11 }));
+    g.appendChild(el('rect', { class:'nbar', x:0, y:10, width:4.5, height:n.h-20, rx:2.5, fill:n.color }));
+    const t = el('text', { class:'nlabel' });
+    n.lines.forEach((ln, i) => {
+      const ts = el('tspan', { x:PADX, y:PAD_TOP + 12 + i*LINE_H }); ts.textContent = ln; t.appendChild(ts);
+    });
+    g.appendChild(t);
+    const tf = el('text', { class:'nlabel-far' });
+    n.farLines.forEach((ln, i) => {
+      const ts = el('tspan', { x:PADX, y: (n.h - n.farLines.length*18)/2 + 14 + i*18 });
+      ts.textContent = ln; tf.appendChild(ts);
+    });
+    g.appendChild(tf);
+    const meta = el('text', { class:'nmeta', x:PADX, y:n.h - PAD_BOT - 3 });
+    const nPre = n.pre.length, nSuc = n.suc.length;
+    meta.textContent = (nPre ? nPre + (nPre>1?' pré-req':' pré-req') : 'sem pré-requisito') + (nSuc ? '  ·  abre ' + nSuc : '');
+    g.appendChild(meta);
+    n.el = g;
+    g.addEventListener('click', ev => { ev.stopPropagation(); select(n.id); });
+    g.addEventListener('mouseenter', () => { if (S.sel === null) hover(n.id); });
+    g.addEventListener('mouseleave', () => { if (S.sel === null) hover(null); });
+    gNodes.appendChild(g);
+  });
+
+  applyTransform();
+}
+
+/* ====================== INTERAÇÃO ====================== */
+function paint(){
+  const sel = S.sel;
+  const axOff = S.offAxes;
+  S.nodes.forEach(n => {
+    const cl = n.el.classList;
+    cl.remove('up','down','sel','mute','gone','hit');
+    if (axOff.has(n.ax)) { cl.add('gone'); return; }
+    if (S.hits.size && S.hits.has(n.id)) cl.add('hit');
+    if (sel === null){ if (S.hits.size && !S.hits.has(n.id)) cl.add('mute'); return; }
+    const s = S.nodes[sel];
+    if (n.id === sel) cl.add('sel');
+    else if (s.anc.has(n.id)) cl.add('up');
+    else if (s.des.has(n.id)) cl.add('down');
+    else cl.add(S.focus ? 'gone' : 'mute');
+  });
+  S.edges.forEach(e => {
+    const cl = e.el.classList;
+    cl.remove('up','down','mute','gone');
+    const a = S.nodes[e.s], b = S.nodes[e.t];
+    if (axOff.has(a.ax) || axOff.has(b.ax)) { cl.add('gone'); return; }
+    if (sel === null) { if (S.hits.size) cl.add('mute'); return; }
+    const s = S.nodes[sel];
+    const inUp = (e.t === sel || s.anc.has(e.t)) && (s.anc.has(e.s));
+    const inDown = (e.s === sel || s.des.has(e.s)) && (s.des.has(e.t));
+    if (inUp) cl.add('up');
+    else if (inDown) cl.add('down');
+    else cl.add(S.focus ? 'gone' : 'mute');
+  });
+}
+
+function hover(id){
+  if (id === null){ paint(); return; }
+  const n = S.nodes[id];
+  S.nodes.forEach(m => { const cl = m.el.classList; cl.remove('up','down','mute');
+    if (S.offAxes.has(m.ax)) return;
+    if (m.id === id) return;
+    if (n.pre.includes(m.id)) cl.add('up');
+    else if (n.suc.includes(m.id)) cl.add('down');
+  });
+  S.edges.forEach(e => { const cl = e.el.classList; cl.remove('up','down','mute');
+    if (e.t === id) cl.add('up'); else if (e.s === id) cl.add('down');
+  });
+}
+
+function select(id){
+  S.sel = (S.sel === id) ? null : id;
+  paint();
+  if (S.sel === null) showEmptyDetail(DATA[S.course]); else renderDetail(S.nodes[S.sel]);
+  switchPane('detail');
+}
+
+/* ====================== PAINEL ====================== */
+const paneDetail = document.getElementById('pane-detail');
+const paneOver = document.getElementById('pane-overview');
+
+function switchPane(p){
+  document.querySelectorAll('.ptabs button').forEach(b =>
+    b.setAttribute('aria-selected', b.dataset.pane === p));
+  document.querySelectorAll('.pane').forEach(x => x.classList.toggle('on', x.id === 'pane-' + p));
+}
+document.querySelectorAll('.ptabs button').forEach(b =>
+  b.addEventListener('click', () => switchPane(b.dataset.pane)));
+
+const esc = s => s.replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+function showEmptyDetail(c){
+  paneDetail.innerHTML = `<div class="empty">
+    Clique em uma disciplina do grafo para ver a cadeia completa.<br><br>
+    <b>Azul</b> — tudo que ela exige antes (montante).<br>
+    <b>Laranja</b> — tudo que ela destrava depois (jusante).<br><br>
+    Linhas tracejadas indicam pré-requisito alternativo (<b>ou</b>); linhas cheias, exigência cumulativa (<b>e</b>).
+  </div>`;
+}
+
+function itemBtn(n, extra){
+  return `<button class="item" data-go="${n.id}"><i style="background:${n.color}"></i>
+    <span>${esc(n.name)}</span><em>${extra || ('P' + n.p)}</em></button>`;
+}
+
+function renderDetail(n){
+  const c = DATA[S.course];
+  const anc = [...n.anc].map(i => S.nodes[i]).sort((a,b)=>a.p-b.p||a.name.localeCompare(b.name));
+  const des = [...n.des].map(i => S.nodes[i]).sort((a,b)=>a.p-b.p||a.name.localeCompare(b.name));
+  const suc = n.suc.map(i => S.nodes[i]).sort((a,b)=>a.p-b.p);
+
+  let pre = '';
+  if (!n.groups.length) pre = `<div class="empty" style="padding:2px 2px 8px">Disciplina de entrada — não exige nada.</div>`;
+  else pre = n.preGroups.map(g => {
+    if (g.length === 1) return itemBtn(S.nodes[g[0]]);
+    return `<div class="orbox"><div class="ortag">cumprir um destes</div>` +
+      g.map(i => itemBtn(S.nodes[i])).join('') + `</div>`;
+  }).join('');
+
+  const maxDes = Math.max(1, ...S.nodes.map(x => x.des.size));
+  paneDetail.innerHTML = `
+    <h3 class="dtitle">${esc(n.name)}</h3>
+    <div class="dchips">
+      <span class="chip"><b>${n.p}º período</b></span>
+      <span class="chip"><i style="background:${n.color}"></i>${esc(n.ax)}</span>
+      <span class="chip">nível ${n.depth}</span>
+    </div>
+    ${n.obs ? `<div class="note"><b>Ponto de atenção da matriz</b>${esc(n.obs)}</div>` : ''}
+    <div class="stats">
+      <div class="stat up"><b>${anc.length}</b><span>exige antes</span></div>
+      <div class="stat down"><b>${des.length}</b><span>trava se reprovar</span></div>
+    </div>
+    <div class="sect">
+      <h5>Pré-requisito direto<s></s>${n.groups.length ? n.pre.length : 0}</h5>
+      <div class="list">${pre}</div>
+    </div>
+    <div class="sect">
+      <h5>Libera imediatamente<s></s>${suc.length}</h5>
+      <div class="list">${suc.length ? suc.map(x=>itemBtn(x)).join('')
+        : `<div class="empty" style="padding:2px">Nenhuma disciplina depende dela — é ponta da matriz.</div>`}</div>
+    </div>
+    <div class="sect">
+      <h5>Impacto total a jusante<s></s>${des.length}</h5>
+      <div class="bar"><i style="width:${Math.round(des.length/maxDes*100)}%;background:var(--down)"></i></div>
+      <div class="list" style="margin-top:9px">${des.map(x=>itemBtn(x)).join('') ||
+        `<div class="empty" style="padding:2px">Sem efeito em cascata.</div>`}</div>
+    </div>
+    <div class="sect">
+      <h5>Cadeia completa a montante<s></s>${anc.length}</h5>
+      <div class="list">${anc.map(x=>itemBtn(x)).join('') ||
+        `<div class="empty" style="padding:2px">Nada precede esta disciplina.</div>`}</div>
+    </div>`;
+  paneDetail.querySelectorAll('[data-go]').forEach(b =>
+    b.addEventListener('click', () => { const id = +b.dataset.go; select(id); centerOn(id); }));
+}
+
+function renderOverview(c){
+  const entry = S.nodes.filter(n => !n.pre.length);
+  const leaf = S.nodes.filter(n => !n.suc.length);
+  const maxDepth = Math.max(...S.nodes.map(n => n.depth));
+  const critical = S.nodes.filter(n => n.depth === maxDepth);
+  const top = [...S.nodes].sort((a,b) => b.des.size - a.des.size || a.p - b.p).slice(0, 8);
+  const heavy = [...S.nodes].sort((a,b) => b.anc.size - a.anc.size).slice(0, 5);
+  const orNodes = S.nodes.filter(n => n.groups.some(g => g.length > 1));
+  const notes = S.nodes.filter(n => n.obs);
+  const maxD = Math.max(1, top[0].des.size);
+
+  // caminho mais longo (uma das cadeias críticas)
+  let cur = critical[0], chain = [cur];
+  while (cur.pre.length){
+    cur = cur.pre.map(i=>S.nodes[i]).sort((a,b)=>b.depth-a.depth)[0];
+    chain.unshift(cur);
+  }
+
+  paneOver.innerHTML = `
+    <h3 class="dtitle" style="font-size:15px">${esc(c.label)}</h3>
+    <div class="stats" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="stat"><b>${S.nodes.length}</b><span>disciplinas</span></div>
+      <div class="stat"><b>${S.edges.length}</b><span>dependências</span></div>
+      <div class="stat"><b>${maxDepth}</b><span>níveis</span></div>
+    </div>
+    <div class="sect">
+      <h5>Maior gargalo — trava mais disciplinas<s></s></h5>
+      <div class="rank">${top.map(n => `
+        <div class="r"><span><u data-go="${n.id}">${esc(n.name)}</u><b>${n.des.size}</b></span>
+        <div class="bar"><i style="width:${Math.round(n.des.size/maxD*100)}%;background:${n.color}"></i></div></div>`).join('')}
+      </div>
+    </div>
+    <div class="sect">
+      <h5>Cadeia crítica — ${chain.length} disciplinas em sequência<s></s></h5>
+      <div class="list">${chain.map((n,i)=>itemBtn(n, 'nível ' + n.depth)).join('')}</div>
+    </div>
+    <div class="sect">
+      <h5>Mais dependente — exige mais histórico<s></s></h5>
+      <div class="list">${heavy.map(n=>itemBtn(n, n.anc.size + ' antes')).join('')}</div>
+    </div>
+    <div class="sect">
+      <h5>Entradas sem pré-requisito<s></s>${entry.length}</h5>
+      <div class="list">${entry.map(n=>itemBtn(n)).join('')}</div>
+    </div>
+    <div class="sect">
+      <h5>Pontas da matriz — nada depende delas<s></s>${leaf.length}</h5>
+      <div class="list">${leaf.map(n=>itemBtn(n)).join('')}</div>
+    </div>
+    ${orNodes.length ? `<div class="sect">
+      <h5>Com pré-requisito alternativo (ou)<s></s>${orNodes.length}</h5>
+      <div class="list">${orNodes.map(n=>itemBtn(n)).join('')}</div></div>` : ''}
+    ${notes.length ? `<div class="sect">
+      <h5>Pontos de atenção<s></s>${notes.length}</h5>
+      ${notes.map(n=>`<div class="note"><b>${esc(n.name)}</b>${esc(n.obs)}</div>`).join('')}</div>` : ''}`;
+  paneOver.querySelectorAll('[data-go]').forEach(b =>
+    b.addEventListener('click', () => { const id = +b.dataset.go; select(id); centerOn(id); switchPane('detail'); }));
+}
+
+/* ====================== LEGENDA ====================== */
+function buildLegend(c){
+  const lg = document.getElementById('legend');
+  const counts = {};
+  S.nodes.forEach(n => counts[n.ax] = (counts[n.ax]||0)+1);
+  lg.innerHTML = `<h4>Eixos de formação</h4>` +
+    Object.keys(c.axes).map(ax =>
+      `<button data-ax="${esc(ax)}"><i style="background:${c.axes[ax]}"></i>${esc(ax)}
+       <em style="margin-left:auto;font-style:normal;font-size:10px;color:var(--ink-3)">${counts[ax]||0}</em></button>`).join('') +
+    `<div class="foot">
+       <b>Clique</b> no eixo: oculta · <b>na disciplina</b>: abre a cadeia<br>
+       Rolagem: zoom · Arrastar: mover · <span class="key">esc</span>: limpar
+     </div>`;
+  lg.querySelectorAll('[data-ax]').forEach(b => b.addEventListener('click', () => {
+    const ax = b.dataset.ax;
+    if (S.offAxes.has(ax)) S.offAxes.delete(ax); else S.offAxes.add(ax);
+    b.classList.toggle('off', S.offAxes.has(ax));
+    paint();
+  }));
+}
+
+/* ====================== ZOOM / PAN ====================== */
+function applyTransform(){
+  gRoot.setAttribute('transform', `translate(${S.tx},${S.ty}) scale(${S.k})`);
+  document.getElementById('zlvl').textContent = Math.round(S.k*100) + '%';
+  gRoot.classList.toggle('far', S.k < 0.62);
+  updateMinimap();
+}
+
+/* ---------- minimapa ---------- */
+const mapbox = document.getElementById('mapbox');
+let vpRect = null;
+function buildMinimap(){
+  const h = Math.round(214 * S.H / S.W);
+  mapbox.setAttribute('viewBox', `${-BAND_PAD} 0 ${S.W} ${S.H}`);
+  mapbox.setAttribute('height', Math.max(46, h));
+  mapbox.textContent = '';
+  S.nodes.forEach(n => mapbox.appendChild(el('rect', {
+    x:n.x, y:n.y, width:n.w, height:n.h, rx:6, fill:n.color, opacity:.5 })));
+  vpRect = el('rect', { class:'vp', rx:8 });
+  mapbox.appendChild(vpRect);
+}
+function updateMinimap(){
+  if (!vpRect) return;
+  const r = stage.getBoundingClientRect();
+  vpRect.setAttribute('x', -S.tx / S.k);
+  vpRect.setAttribute('y', -S.ty / S.k);
+  vpRect.setAttribute('width', r.width / S.k);
+  vpRect.setAttribute('height', r.height / S.k);
+}
+mapbox.addEventListener('click', e => {
+  const b = mapbox.getBoundingClientRect();
+  const wx = -BAND_PAD + (e.clientX - b.left) / b.width * S.W;
+  const wy = (e.clientY - b.top) / b.height * S.H;
+  const r = stage.getBoundingClientRect();
+  S.tx = r.width/2 - wx*S.k; S.ty = r.height/2 - wy*S.k;
+  applyTransform();
+});
+function zoomToPeriod(p){
+  const col = S.cols[p-1]; if (!col || !col.length) return;
+  const r = stage.getBoundingClientRect();
+  const top = Math.min(...col.map(n=>n.y)), bot = Math.max(...col.map(n=>n.y+n.h));
+  const k = clampK(Math.min(1.15, (r.height - 60) / (bot - top + 60), (r.width - 80) / (NW + COL_GAP*1.6)));
+  S.k = k;
+  S.tx = r.width/2 - (col[0].x + NW/2)*k;
+  S.ty = r.height/2 - ((top+bot)/2)*k;
+  applyTransform();
+}
+function buildPeriods(c){
+  const box = document.getElementById('periods');
+  box.innerHTML = '';
+  for (let i=1;i<=c.periods;i++){
+    const b = document.createElement('button');
+    b.textContent = i + 'º'; b.title = i + 'º período';
+    b.onclick = () => zoomToPeriod(i);
+    box.appendChild(b);
+  }
+}
+function clampK(k){ return Math.min(3.2, Math.max(0.12, k)); }
+function zoomAt(cx, cy, factor){
+  const k2 = clampK(S.k * factor);
+  const r = k2 / S.k;
+  S.tx = cx - (cx - S.tx) * r; S.ty = cy - (cy - S.ty) * r; S.k = k2;
+  applyTransform();
+}
+function fit(){
+  const r = stage.getBoundingClientRect();
+  const pad = 46;
+  const k = clampK(Math.min((r.width - pad*2)/S.W, (r.height - pad*2)/S.H));
+  S.k = k;
+  S.tx = (r.width - S.W*k)/2 + BAND_PAD*k;
+  S.ty = (r.height - S.H*k)/2;
+  applyTransform();
+}
+function centerOn(id){
+  const n = S.nodes[id], r = stage.getBoundingClientRect();
+  const k = Math.max(S.k, 0.72);
+  S.k = k;
+  S.tx = r.width/2 - (n.x + n.w/2)*k;
+  S.ty = r.height/2 - (n.y + n.h/2)*k;
+  applyTransform();
+}
+
+let drag = null, pointers = new Map(), pinch = null;
+svg.addEventListener('pointerdown', e => {
+  svg.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  if (pointers.size === 2){
+    const [a,b] = [...pointers.values()];
+    pinch = { d: Math.hypot(a.x-b.x, a.y-b.y) };
+    drag = null;
+  } else {
+    drag = { x:e.clientX, y:e.clientY, tx:S.tx, ty:S.ty, moved:false };
+    svg.classList.add('grabbing');
+  }
+});
+svg.addEventListener('pointermove', e => {
+  if (!pointers.has(e.pointerId)) return;
+  pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  if (pinch && pointers.size === 2){
+    const [a,b] = [...pointers.values()];
+    const d = Math.hypot(a.x-b.x, a.y-b.y);
+    const r = stage.getBoundingClientRect();
+    zoomAt((a.x+b.x)/2 - r.left, (a.y+b.y)/2 - r.top, d/pinch.d);
+    pinch.d = d;
+    return;
+  }
+  if (drag){
+    S.tx = drag.tx + (e.clientX - drag.x);
+    S.ty = drag.ty + (e.clientY - drag.y);
+    if (Math.abs(e.clientX-drag.x) + Math.abs(e.clientY-drag.y) > 4) drag.moved = true;
+    applyTransform();
+  }
+});
+const endPtr = e => { pointers.delete(e.pointerId); if (pointers.size < 2) pinch = null;
+  if (pointers.size === 0){ drag = null; svg.classList.remove('grabbing'); } };
+svg.addEventListener('pointerup', endPtr);
+svg.addEventListener('pointercancel', endPtr);
+svg.addEventListener('wheel', e => {
+  e.preventDefault();
+  const r = stage.getBoundingClientRect();
+  const f = Math.exp(-e.deltaY * (e.ctrlKey ? 0.012 : 0.0022));
+  zoomAt(e.clientX - r.left, e.clientY - r.top, f);
+}, { passive:false });
+svg.addEventListener('click', () => { if (drag && drag.moved) return;
+  if (S.sel !== null){ S.sel = null; paint(); showEmptyDetail(DATA[S.course]); } });
+
+document.getElementById('zin').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 1.25); };
+document.getElementById('zout').onclick = () => { const r = stage.getBoundingClientRect(); zoomAt(r.width/2, r.height/2, 0.8); };
+document.getElementById('fitBtn').onclick = fit;
+
+/* ====================== BUSCA ====================== */
+const q = document.getElementById('q'), hits = document.getElementById('hits');
+const wrapEl = document.getElementById('searchWrap');
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+let curHit = -1, hitList = [];
+
+function runSearch(){
+  const v = norm(q.value.trim());
+  wrapEl.classList.toggle('has', !!v);
+  if (!v){ S.hits = new Set(); hits.classList.remove('on'); paint(); return; }
+  hitList = S.nodes.filter(n => norm(n.name).includes(v)).slice(0, 12);
+  S.hits = new Set(hitList.map(n => n.id));
+  hits.innerHTML = hitList.length
+    ? hitList.map((n,i) => `<div data-id="${n.id}" class="${i===0?'cur':''}">
+        <i style="width:8px;height:8px;border-radius:3px;background:${n.color};flex:none"></i>
+        ${esc(n.name)}<em>${n.p}º per.</em></div>`).join('')
+    : `<div style="color:var(--ink-3)">Nenhuma disciplina encontrada.</div>`;
+  curHit = 0;
+  hits.classList.add('on');
+  hits.querySelectorAll('[data-id]').forEach(d => d.addEventListener('click', () => {
+    const id = +d.dataset.id; select(id); centerOn(id); hits.classList.remove('on');
+  }));
+  paint();
+}
+q.addEventListener('input', runSearch);
+q.addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ q.value = ''; runSearch(); q.blur(); }
+  if (!hitList.length) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp'){
+    e.preventDefault();
+    curHit = (curHit + (e.key === 'ArrowDown' ? 1 : -1) + hitList.length) % hitList.length;
+    hits.querySelectorAll('div').forEach((d,i) => d.classList.toggle('cur', i === curHit));
+  }
+  if (e.key === 'Enter'){
+    const n = hitList[Math.max(0,curHit)];
+    if (n){ select(n.id); centerOn(n.id); hits.classList.remove('on'); q.blur(); }
+  }
+});
+document.getElementById('qclear').onclick = () => { q.value=''; runSearch(); q.focus(); };
+document.addEventListener('click', e => { if (!wrapEl.contains(e.target)) hits.classList.remove('on'); });
+
+/* ====================== BOTÕES ====================== */
+const focusBtn = document.getElementById('focusBtn');
+focusBtn.onclick = () => { S.focus = !S.focus; focusBtn.classList.toggle('on', S.focus); paint(); };
+
+const asideEl = document.getElementById('aside');
+document.getElementById('asideBtn').onclick = () => { asideEl.classList.toggle('hide'); setTimeout(()=>{}, 0); };
+
+document.getElementById('themeBtn').onclick = () => {
+  document.body.classList.toggle('dark');
+  const k=S.k, tx=S.tx, ty=S.ty, sel=S.sel;
+  render(DATA[S.course]);
+  S.k=k; S.tx=tx; S.ty=ty; S.sel=sel; applyTransform(); paint();
+};
+
+/* --------- exportação --------- */
+function serialize(){
+  const c = DATA[S.course];
+  const TOP = 74;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute('viewBox', `${-BAND_PAD} ${-TOP} ${S.W} ${S.H + TOP}`);
+  clone.setAttribute('width', S.W); clone.setAttribute('height', S.H + TOP);
+  const g = clone.querySelector('.canvas');
+  g.removeAttribute('transform');
+  clone.querySelectorAll('.mute').forEach(x => x.classList.remove('mute'));
+  const dark = document.body.classList.contains('dark');
+  const bg = document.createElementNS(NS,'rect');
+  bg.setAttribute('x',-BAND_PAD); bg.setAttribute('y',-TOP);
+  bg.setAttribute('width',S.W); bg.setAttribute('height',S.H + TOP);
+  bg.setAttribute('fill', dark ? '#0b1220' : '#f6f7f9');
+  clone.insertBefore(bg, clone.querySelector('.canvas'));
+
+  const mk = (txt, y, size, weight, fill, ls) => {
+    const t = document.createElementNS(NS,'text');
+    t.setAttribute('x', -BAND_PAD + 26); t.setAttribute('y', y);
+    t.setAttribute('font-family','-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif');
+    t.setAttribute('font-size', size); t.setAttribute('font-weight', weight);
+    t.setAttribute('fill', fill); if (ls) t.setAttribute('letter-spacing', ls);
+    t.textContent = txt; return t;
+  };
+  clone.appendChild(mk('Grafo de pré-requisitos · ' + c.label, -TOP + 34, 25, 700, dark ? '#e8edf5' : '#0b1220', '-0.4'));
+  clone.appendChild(mk('CESUPA · ' + S.nodes.length + ' disciplinas · ' + S.edges.length +
+    ' dependências · linha cheia = pré-requisito obrigatório (e) · linha tracejada = alternativa (ou)',
+    -TOP + 55, 12.5, 500, dark ? '#8496ad' : '#64748b'));
+  return new XMLSerializer().serializeToString(clone);
+}
+function dl(blob, name){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+document.getElementById('svgBtn').onclick = () =>
+  dl(new Blob([serialize()], {type:'image/svg+xml'}), `grafo-prerequisitos-${S.course}.svg`);
+document.getElementById('pngBtn').onclick = () => {
+  const src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(serialize())));
+  const img = new Image();
+  img.onload = () => {
+    const sc = 2;
+    const cv = document.createElement('canvas');
+    cv.width = S.W*sc; cv.height = (S.H+74)*sc;
+    const cx = cv.getContext('2d'); cx.scale(sc, sc);
+    cx.drawImage(img, 0, 0, S.W, S.H+74);
+    cv.toBlob(b => dl(b, `grafo-prerequisitos-${S.course}.png`));
+  };
+  img.src = src;
+};
+
+/* --------- teclado --------- */
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === '/'){ e.preventDefault(); q.focus(); }
+  if (e.key === 'Escape'){ S.sel = null; S.hits = new Set(); q.value=''; wrapEl.classList.remove('has'); paint(); showEmptyDetail(DATA[S.course]); }
+  if (e.key === '0'){ fit(); }
+  if (e.key === '+' || e.key === '='){ const r=stage.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,1.25); }
+  if (e.key === '-'){ const r=stage.getBoundingClientRect(); zoomAt(r.width/2,r.height/2,0.8); }
+  if (e.key.toLowerCase() === 'f'){ focusBtn.click(); }
+});
+window.addEventListener('resize', () => { clearTimeout(window._rz); window._rz = setTimeout(fit, 160); });
+
+/* ====================== ABAS DE CURSO ====================== */
+const tabsEl = document.getElementById('courseTabs');
+Object.keys(DATA).forEach((k, i) => {
+  const b = document.createElement('button');
+  b.setAttribute('role','tab'); b.setAttribute('aria-selected', i===0);
+  b.dataset.k = k; b.textContent = DATA[k].short;
+  b.title = DATA[k].label;
+  b.onclick = () => {
+    tabsEl.querySelectorAll('button').forEach(x => x.setAttribute('aria-selected', x === b));
+    q.value = ''; wrapEl.classList.remove('has'); hits.classList.remove('on');
+    build(k);
+  };
+  tabsEl.appendChild(b);
+});
+
+build(Object.keys(DATA)[0]);
+</script>
+</body>
+</html>
